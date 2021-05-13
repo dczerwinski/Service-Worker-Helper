@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".view.dashboard.addguide.AddGuideActivity"
+    tools:showIn="@layout/activity_single_reported_guide">
+
+    <LinearLayout
+        android:id="@+id/mainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="3dp"
+        android:layout_marginVertical="10dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="top">
+
+        <LinearLayout
+            android:id="@+id/layoutGuideTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/radius_padding"
+            android:paddingBottom="@dimen/radius_padding"
+            android:paddingTop="@dimen/radius_padding_top"
+            android:background="@drawable/radius_border"
+            android:foreground="@drawable/ripple_button"
+            android:layout_gravity="center_horizontal"
+            android:gravity="top">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/guide_title"
+                android:textColor="@color/item_title_color"
+                android:textStyle="bold"
+                android:textSize="21sp" />
+
+            <EditText
+                android:id="@+id/guideNameEditText"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content"
+                android:hint="@string/guide_name"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <LinearLayout
+            android:id="@+id/layoutGuideContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/radius_padding"
+            android:paddingBottom="@dimen/radius_padding"
+            android:paddingTop="@dimen/radius_padding_top"
+            android:background="@drawable/radius_border"
+            android:foreground="@drawable/ripple_button"
+            android:layout_gravity="center_horizontal"
+            android:gravity="top">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/guide_content"
+                android:textColor="@color/item_title_color"
+                android:textStyle="bold"
+                android:textSize="21sp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/stepsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <LinearLayout
+            android:id="@+id/layoutGuideTags"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/radius_padding"
+            android:paddingBottom="@dimen/radius_padding"
+            android:paddingTop="@dimen/radius_padding_top"
+            android:background="@drawable/radius_border"
+            android:foreground="@drawable/ripple_button"
+            android:layout_gravity="center_horizontal"
+            android:gravity="top">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/guide_tags"
+                android:textColor="@color/item_title_color"
+                android:textStyle="bold"
+                android:textSize="21sp" />
+
+            <EditText
+                android:id="@+id/tagsEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_add_tag" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tagsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <LinearLayout
+            android:id="@+id/layoutGuideReport"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/radius_padding"
+            android:paddingBottom="@dimen/radius_padding"
+            android:paddingTop="@dimen/radius_padding_top"
+            android:background="@drawable/radius_border"
+            android:foreground="@drawable/ripple_button"
+            android:layout_gravity="center_horizontal"
+            android:gravity="top">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/guide_report"
+                android:textColor="@color/item_title_color"
+                android:textStyle="bold"
+                android:textSize="21sp" />
+
+            <TextView
+                android:id="@+id/reportDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                style="@style/AppButtonStyle"
+                android:id="@+id/declineButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/delete_guide"/>
+
+            <Button
+                style="@style/AppButtonStyle"
+                android:id="@+id/acceptButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/corrected"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="white">#FFFFFF</color>
+    <color name="colorStar">#FFEB3B</color>
+    <color name="item_title_color">#3700B3</color>
+    <color name="pending_color">#FF9800</color>
+    <color name="reported_color">#F44336</color>
+</resources>

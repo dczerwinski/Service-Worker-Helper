@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_all_guides">
+
+    <fragment
+        android:id="@+id/nav_all_guides"
+        android:name="com.wat.serviceworkerhelper.view.dashboard.allguides.AllGuidesFragment"
+        android:label="@string/menu_guides"
+        tools:layout="@layout/fragment_all_guides" />
+
+    <fragment
+        android:id="@+id/nav_my_guides"
+        android:name="com.wat.serviceworkerhelper.view.dashboard.myguides.MyGuidesFragment"
+        android:label="@string/menu_my_guides"
+        tools:layout="@layout/fragment_my_guides" />
+
+    <fragment
+        android:id="@+id/nav_manage_users"
+        android:name="com.wat.serviceworkerhelper.view.dashboard.manageusers.ManageUsersFragment"
+        android:label="@string/menu_manage_users"
+        tools:layout="@layout/fragment_manage_users" />
+
+    <fragment
+        android:id="@+id/nav_pending_new_guides"
+        android:name="com.wat.serviceworkerhelper.view.dashboard.pendingnewguides.PendingNewGuidesFragment"
+        android:label="@string/menu_pending_new_guides"
+        tools:layout="@layout/fragment_pending_new_guides" />
+
+    <fragment
+        android:id="@+id/nav_reported_guides"
+        android:name="com.wat.serviceworkerhelper.view.dashboard.repotedguides.ReportedGuidesFragment"
+        android:label="@string/menu_reported_guides"
+        tools:layout="@layout/fragment_reported_guides" />
+</navigation>

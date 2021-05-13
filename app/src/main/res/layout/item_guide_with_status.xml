@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="130dp"
+    android:orientation="vertical"
+    android:foreground="@drawable/ripple"
+    android:layout_weight="1">
+
+    <LinearLayout
+        android:id="@+id/layoutStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/radius_pending"
+        android:foreground="@drawable/ripple"
+        android:layout_gravity="center_horizontal|bottom"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/iconInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foreground="@drawable/ripple"
+                android:src="@drawable/ic_info"/>
+
+            <TextView
+                android:id="@+id/itemStatus"
+                android:transitionName="titleTransition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/place_holder"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:layout_marginHorizontal="18dp"
+                android:textSize="25sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/item_guide_height"
+        android:gravity="start"
+        android:weightSum="1"
+        android:layout_gravity="center_horizontal|top"
+        android:background="@drawable/radius"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="start"
+            android:layout_weight=".75"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/itemTitle"
+                android:transitionName="titleTransition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/place_holder"
+                android:textColor="@android:color/white"
+                android:layout_marginHorizontal="18dp"
+                android:textSize="25sp"/>
+
+            <TextView
+                android:id="@+id/itemDescription"
+                android:transitionName="descriptionTransition"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="3dp"
+                android:text="@string/place_holder"
+                android:textColor="@android:color/darker_gray"
+                android:layout_marginHorizontal="18dp"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_weight=".25"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/itemRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="4.6"
+                android:textColor="@android:color/white"
+                android:layout_marginHorizontal="18dp"
+                android:textSize="25sp"/>
+
+            <RatingBar
+                style="?android:attr/ratingBarStyleIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:rating="1"
+                android:numStars="1"/>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

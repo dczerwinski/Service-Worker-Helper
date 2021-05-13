@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nestedScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".view.dashboard.manageusers.UserActivity"
+    tools:showIn="@layout/activity_user">
+
+    <LinearLayout
+        android:id="@+id/layoutMyOpinion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/radius_padding"
+        android:paddingBottom="@dimen/radius_padding"
+        android:paddingTop="@dimen/radius_padding_top"
+        android:gravity="center_horizontal">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:transitionName="imageTransition"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:foreground="@drawable/radius_avatar"
+            android:background="@color/colorPrimary"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="@dimen/radius_photo">
+
+            <ImageView
+                android:id="@+id/avatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@mipmap/ic_launcher"
+                android:scaleType="fitXY" />
+
+        </androidx.cardview.widget.CardView>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <TextView
+            android:id="@+id/displayName"
+            android:transitionName="displayNameTransition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:autoSizeTextType="uniform"
+            app:autoSizeMinTextSize="16sp"
+            app:autoSizeMaxTextSize="100sp"
+            app:autoSizeStepGranularity="1sp"
+            android:maxLines="1"
+            android:text="@string/place_holder"
+            android:textColor="@android:color/black"
+            android:textSize="40sp"/>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_weight="0.9"
+                android:transitionName="emailTransition"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/place_holder"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="16sp"
+                app:autoSizeMaxTextSize="100sp"
+                app:autoSizeStepGranularity="1sp"
+                android:maxLines="1"
+                android:textColor="@android:color/black"
+                android:textSize="30sp"/>
+
+            <ImageView
+                android:id="@+id/sendEmail"
+                android:layout_weight="0.1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:foreground="@drawable/ripple_button"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/ic_email" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/user_type" />
+
+            <Spinner
+                android:id="@+id/userTypeSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="30dp" />
+
+        <Button
+            style="@style/AppButtonStyle"
+            android:id="@+id/saveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save"/>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

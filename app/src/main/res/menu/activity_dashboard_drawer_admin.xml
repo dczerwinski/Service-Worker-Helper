@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item android:title="@string/basic_functions">
+        <menu>
+            <item
+                android:id="@+id/nav_all_guides"
+                android:icon="@drawable/ic_menu_guides"
+                android:title="@string/menu_guides" />
+            <item
+                android:id="@+id/nav_my_guides"
+                android:icon="@drawable/ic_heart_empty"
+                android:title="@string/menu_my_guides" />
+        </menu>
+    </item>
+
+    <item android:title="@string/admin_functions">
+        <menu>
+            <item
+                android:id="@+id/nav_manage_users"
+                android:icon="@drawable/ic_manage_users"
+                android:title="@string/menu_manage_users" />
+            <item
+                android:id="@+id/nav_pending_new_guides"
+                android:icon="@drawable/ic_pending"
+                android:title="@string/menu_pending_new_guides" />
+            <item
+                android:id="@+id/nav_reported_guides"
+                android:icon="@drawable/ic_reported"
+                android:title="@string/menu_reported_guides" />
+        </menu>
+    </item>
+
+    <item
+        android:title=""/>
+</menu>

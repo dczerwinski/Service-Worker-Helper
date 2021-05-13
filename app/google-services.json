@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "749305180413",
+    "firebase_url": "https://service-worker-helper.firebaseio.com",
+    "project_id": "service-worker-helper",
+    "storage_bucket": "service-worker-helper.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:749305180413:android:6ba801144d12bf18e20e94",
+        "android_client_info": {
+          "package_name": "com.example.serviceworkerhelper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "749305180413-2ki01649o11nup1o6v5kqi4b7uakopj9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDc0SGytGNMUsP-XpQRYVnQh5LjX76js-0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "749305180413-2ki01649o11nup1o6v5kqi4b7uakopj9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

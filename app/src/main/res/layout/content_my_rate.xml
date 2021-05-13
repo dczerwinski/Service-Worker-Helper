@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layoutMyOpinion"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/radius_padding"
+    android:paddingBottom="@dimen/radius_padding"
+    android:paddingTop="@dimen/radius_padding_top"
+    android:background="@drawable/radius_border"
+    android:foreground="@drawable/ripple_button"
+    android:layout_gravity="start">
+
+    <TextView
+        android:id="@+id/myRateTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/rateIt"
+        android:textColor="@color/item_title_color"
+        android:textStyle="bold"
+        android:textSize="21sp" />
+
+    <RatingBar
+        android:id="@+id/ratingByMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:stepSize="1"
+        android:numStars="5"/>
+
+    <LinearLayout
+        android:id="@+id/layoutOpinionAdded"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="start"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:weightSum="1"
+            android:layout_marginHorizontal="10dp"
+            android:orientation="horizontal" >
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="25dp">
+
+                <ImageView
+                    android:id="@+id/myAvatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/ic_launcher"
+                    android:scaleType="fitXY" />
+
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="0.4"
+                android:gravity="start"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/displayName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/place_holder"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <RatingBar
+                        style="?android:attr/ratingBarStyleIndicator"
+                        android:id="@+id/myRatingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-45dp"
+                        android:layout_marginTop="-10dp"
+                        android:isIndicator="true"
+                        android:numStars="5"
+                        android:scaleX="0.5"
+                        android:scaleY="0.5"/>
+
+                    <TextView
+                        android:id="@+id/myDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-25dp"
+                        android:text="@string/place_holder"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="15sp"/>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/myOpinionSettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="80dp"
+                style="?android:attr/actionOverflowButtonStyle"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/myMainOpinion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/place_holder"
+            android:textColor="@android:color/black"
+            android:layout_marginHorizontal="18dp"
+            android:textSize="18sp"/>
+
+        <Button
+            android:id="@+id/editMyOpinion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="18dp"
+            android:text="@string/edit_your_opinion"
+            android:background="@android:color/transparent"
+            android:foreground="@drawable/ripple_button"
+            android:textColor="@color/colorPrimary"/>
+
+    </LinearLayout>
+
+</LinearLayout>
