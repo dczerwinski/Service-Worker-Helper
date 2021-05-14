@@ -111,6 +111,11 @@ class LoginActivity : AppCompatActivity() {
         verifyUser()
     }
 
+    override fun onDestroy() {
+        loadingDialog.dismiss()
+        super.onDestroy()
+    }
+
     private fun verifyUser(user: User? = null) {
         val currentUser = auth.currentUser
         Log.d(TAG, "current user = $currentUser")

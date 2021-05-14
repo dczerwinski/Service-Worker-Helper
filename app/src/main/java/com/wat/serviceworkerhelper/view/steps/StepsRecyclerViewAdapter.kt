@@ -1,16 +1,23 @@
 package com.wat.serviceworkerhelper.view.steps
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.core.app.ActivityCompat.*
 import androidx.recyclerview.widget.RecyclerView
 import com.wat.serviceworkerhelper.R
 import com.wat.serviceworkerhelper.model.entities.Guide
+import kotlinx.coroutines.*
+import java.lang.Thread.sleep
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.coroutineContext
 
 class StepsRecyclerViewAdapter(
     val activity: Activity?
@@ -98,7 +105,7 @@ class StepsRecyclerViewAdapter(
                     holder.deleteButton.visibility = View.VISIBLE
                     holder.deleteButton.setOnClickListener {
                         itemList.removeAt(position)
-                        notifyItemRemoved(position)
+                        notifyDataSetChanged()
                     }
                 } else {
                     holder.deleteButton.visibility = View.GONE
@@ -147,6 +154,22 @@ class StepsRecyclerViewAdapter(
                             )
                         )
                         notifyDataSetChanged()
+                        CoroutineScope(Dispatchers.IO).launch {
+                            kotlin.runCatching {
+                                delay(50L)
+                                activity!!.runOnUiThread {
+                                    holder.stepContent.requestFocus()
+                                    holder.stepContent.isFocusableInTouchMode = true
+                                    val inputMetManager = it
+                                        .context
+                                        .getSystemService(Context.INPUT_METHOD_SERVICE
+                                        ) as InputMethodManager
+                                    inputMetManager.showSoftInput(
+                                        holder.stepContent,
+                                        InputMethodManager.SHOW_FORCED)
+                                }
+                            }
+                        }
                     } else {
                         Toast.makeText(
                             holder.itemView.context,
