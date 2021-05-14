@@ -144,11 +144,11 @@ class LoginActivity : AppCompatActivity() {
                 intent.putExtra(USER_EXTRA_KEY, user)
                 startActivity(intent)
                 finish()
-            } else if (allUsers.isNotEmpty()) {
+            } else if (allUsers.isNotEmpty() && auth.currentUser != null) {
                 Log.i(TAG, "getUserInfo  user is null")
                 var found = false
                 for (usr in allUsers) {
-                    if (usr.uid == auth.currentUser!!.uid) {
+                    if (auth.currentUser != null) {
                         if (usr.isActivated) {
                             isAlreadyLogged = true
                             found = true

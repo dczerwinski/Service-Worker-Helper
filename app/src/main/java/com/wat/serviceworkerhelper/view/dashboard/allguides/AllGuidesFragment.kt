@@ -22,6 +22,10 @@ import com.wat.serviceworkerhelper.utils.NetworkUtils
 
 class AllGuidesFragment : Fragment() {
 
+    companion object {
+        private const val TAG = "AllGuidesFragment"
+    }
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: AllGuidesRecyclerViewAdapter
     private lateinit var viewManager: GridLayoutManager
@@ -67,11 +71,5 @@ class AllGuidesFragment : Fragment() {
         }
 
         return root
-    }
-
-    companion object {
-        private const val TAG = "AllGuidesFragment"
-
-        fun newInstance() = AllGuidesFragment()
     }
 }

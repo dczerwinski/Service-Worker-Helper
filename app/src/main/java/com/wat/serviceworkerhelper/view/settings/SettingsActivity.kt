@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
+import com.wat.serviceworkerhelper.view.dialogs.LoadingDialog
 import kotlinx.android.synthetic.main.activity_settings.*
 import kotlinx.android.synthetic.main.content_settings.*
 
@@ -36,6 +38,9 @@ class SettingsActivity : AppCompatActivity() {
     private val userRepository by lazy { UserEntityRepository(database.userDao()) }
     private val usersViewModel: UsersViewModel by viewModels {
         UsersViewModel.UsersViewModelFactory(userRepository)
+    }
+    private val loadingDialog by lazy {
+        LoadingDialog(this, R.style.LoadingDialog)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,10 +67,11 @@ class SettingsActivity : AppCompatActivity() {
         })
 
         chooseButton.setOnClickListener {
-            choosePhoto()
+            choosePhoto(null)
         }
 
         saveButton.setOnClickListener {
+            loadingDialog.show()
             save()
         }
     }
@@ -94,7 +100,7 @@ class SettingsActivity : AppCompatActivity() {
         email.setText(user.email)
     }
 
-    private fun choosePhoto() {
+    fun choosePhoto(view: View?) {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
@@ -105,7 +111,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun save() {
-        val saveController = SaveController(usersViewModel, this, this.user)
+        val saveController = SaveController(usersViewModel, this, loadingDialog, this.user)
         val newEmail = email.text.toString()
         val newDisplayName = displayName.text.toString()
         if (fileUri != null) {
@@ -172,6 +178,7 @@ class SettingsActivity : AppCompatActivity() {
     private class SaveController(
         private val usersViewModel: UsersViewModel,
         private val activity: Activity,
+        private val loadingDialog: LoadingDialog,
         val user: User
     ) {
 
@@ -219,6 +226,7 @@ class SettingsActivity : AppCompatActivity() {
                         activity.getString(R.string.settings_success),
                         Toast.LENGTH_SHORT
                     ).show()
+                    loadingDialog.dismiss()
                     activity.finish()
                 }
             }

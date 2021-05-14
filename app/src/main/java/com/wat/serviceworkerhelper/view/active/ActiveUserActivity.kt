@@ -90,6 +90,7 @@ class ActiveUserActivity : AppCompatActivity() {
                 usersViewModel.insert(user)
                 u.updateProfile(profileUpdates)
                 u.sendEmailVerification()
+                auth.currentUser!!.sendEmailVerification()
                 auth.signOut()
                 Log.i(TAG, "startActiveUser user activated!")
                 onFinish(Result.SUCCESS)

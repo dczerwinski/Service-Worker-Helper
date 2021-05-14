@@ -25,6 +25,7 @@
             android:transitionName="imageTransition"
             android:layout_width="160dp"
             android:layout_height="160dp"
+            android:onClick="choosePhoto"
             android:foreground="@drawable/radius_avatar"
             android:background="@color/colorPrimary"
             app:cardElevation="0dp"
