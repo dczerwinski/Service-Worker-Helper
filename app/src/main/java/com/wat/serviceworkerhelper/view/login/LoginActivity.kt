@@ -23,6 +23,11 @@ import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
 
+    companion object {
+        const val USER_EXTRA_KEY = "USER_EXTRA_KEY"
+        private const val TAG = "LoginActivity"
+    }
+
     private lateinit var emailTV: TextView
     private lateinit var passwordTV: TextView
     private lateinit var auth: FirebaseAuth
@@ -69,7 +74,15 @@ class LoginActivity : AppCompatActivity() {
                 }
                 else -> {
                     val user = getUserByEmail(email)
-                    if (user?.isActivated == false) {
+                    if (user == null) {
+                        loadingDialog.dismiss()
+                        Log.w(TAG, "user not found")
+                        Toast.makeText(
+                            this,
+                            R.string.user_not_found,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else if (!user.isActivated) {
                         loadingDialog.dismiss()
                         Log.w(TAG, "not activated")
                         Toast.makeText(
@@ -183,10 +196,5 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    companion object {
-        const val USER_EXTRA_KEY = "USER_EXTRA_KEY"
-        private const val TAG = "LoginActivity"
     }
 }
