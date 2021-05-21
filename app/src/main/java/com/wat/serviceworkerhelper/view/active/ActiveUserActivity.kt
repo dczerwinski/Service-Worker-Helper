@@ -6,17 +6,21 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.wat.serviceworkerhelper.R
+import com.wat.serviceworkerhelper.databinding.ActivityActiveUserBinding
 import com.wat.serviceworkerhelper.model.AppRoomDatabase
 import com.wat.serviceworkerhelper.model.entities.User
 import com.wat.serviceworkerhelper.model.repositories.UserEntityRepository
 import com.wat.serviceworkerhelper.viewmodel.UsersViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
-import com.google.firebase.auth.UserProfileChangeRequest
-import kotlinx.android.synthetic.main.activity_active_user.*
 
 class ActiveUserActivity : AppCompatActivity() {
+
+    companion object {
+        private const val TAG = "ActiveUserActivity"
+    }
 
     private val auth = FirebaseAuth.getInstance()
     private val database by lazy { AppRoomDatabase.getDatabase(this) }
@@ -25,28 +29,30 @@ class ActiveUserActivity : AppCompatActivity() {
         UsersViewModel.UsersViewModelFactory(userRepository)
     }
     private var usersList = ArrayList<User>()
+    private lateinit var binding: ActivityActiveUserBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_active_user)
+        binding = ActivityActiveUserBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         usersViewModel.allUsers.observe(this, {
             usersList = ArrayList(it)
         })
 
-        activeUpButton.setOnClickListener {
-            val password = passwordTV.text.toString()
-            val reEnterPassword = reEnterPasswordTV.text.toString()
-            val email = emailTV.text.toString()
+        binding.activeUpButton.setOnClickListener {
+            val password = binding.passwordTV.text.toString()
+            val reEnterPassword = binding.reEnterPasswordTV.text.toString()
+            val email = binding.emailTV.text.toString()
             if (
                 password.isNotEmpty() &&
                 reEnterPassword.isNotEmpty() &&
                 password == reEnterPassword
             ) {
-                if (displayNameTV.text.length < 6) {
+                if (binding.displayNameTV.text.length < 6) {
                     onFinish(Result.WRONG_DISPLAY_NAME)
                 } else {
-                    val displayName = displayNameTV.text.toString()
+                    val displayName = binding.displayNameTV.text.toString()
                     val user = findUser(email)
                     if (user != null) {
                         startActiveUser(user, password, displayName)
@@ -59,7 +65,7 @@ class ActiveUserActivity : AppCompatActivity() {
             }
         }
 
-        backButton.setOnClickListener {
+        binding.backButton.setOnClickListener {
             finish()
         }
     }
@@ -166,9 +172,5 @@ class ActiveUserActivity : AppCompatActivity() {
         DIFFERENT_PASSWORDS,
         USER_NOT_FOUND,
         WRONG_DISPLAY_NAME
-    }
-
-    companion object {
-        private const val TAG = "ActiveUserActivity"
     }
 }

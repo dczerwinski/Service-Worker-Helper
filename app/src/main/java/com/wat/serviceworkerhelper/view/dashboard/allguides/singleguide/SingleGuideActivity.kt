@@ -14,32 +14,28 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
 import com.wat.serviceworkerhelper.R
+import com.wat.serviceworkerhelper.databinding.ActivitySingleGuideBinding
 import com.wat.serviceworkerhelper.model.AppRoomDatabase
 import com.wat.serviceworkerhelper.model.entities.Guide
 import com.wat.serviceworkerhelper.model.entities.User
 import com.wat.serviceworkerhelper.model.repositories.GuideEntityRepository
 import com.wat.serviceworkerhelper.model.repositories.UserEntityRepository
-import com.wat.serviceworkerhelper.viewmodel.GuidesViewModel
-import com.wat.serviceworkerhelper.viewmodel.UsersViewModel
+import com.wat.serviceworkerhelper.utils.HashMapKeys.*
+import com.wat.serviceworkerhelper.utils.ItemDecoration
 import com.wat.serviceworkerhelper.view.dialogs.ExportGuideDialog
 import com.wat.serviceworkerhelper.view.dialogs.RateDialog
 import com.wat.serviceworkerhelper.view.dialogs.ReportDialog
+import com.wat.serviceworkerhelper.view.opinions.OpinionsRecyclerViewAdapter
 import com.wat.serviceworkerhelper.view.steps.StepsRecyclerViewAdapter
 import com.wat.serviceworkerhelper.view.tags.TagsRecyclerViewAdapter
-import com.wat.serviceworkerhelper.utils.HashMapKeys.*
-import com.wat.serviceworkerhelper.utils.ItemDecoration
-import com.google.firebase.auth.FirebaseAuth
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_pending_new_guide.*
-import kotlinx.android.synthetic.main.content_author_info.*
-import kotlinx.android.synthetic.main.content_my_rate.*
-import kotlinx.android.synthetic.main.content_other_ratings.*
-import kotlinx.android.synthetic.main.content_other_ratings.view.*
-import kotlinx.android.synthetic.main.content_singe_guide.*
+import com.wat.serviceworkerhelper.viewmodel.GuidesViewModel
+import com.wat.serviceworkerhelper.viewmodel.UsersViewModel
 
 class SingleGuideActivity : AppCompatActivity() {
 
@@ -48,15 +44,15 @@ class SingleGuideActivity : AppCompatActivity() {
         const val GUIDE_KEY = "GUIDE_KEY"
     }
 
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var binding: ActivitySingleGuideBinding
+    private lateinit var opinionsRecyclerView: RecyclerView
     private lateinit var tagsRecyclerView: RecyclerView
     private lateinit var stepsRecyclerView: RecyclerView
-    private lateinit var adapter: OpinionsRecyclerViewAdapter
+    private lateinit var opinionsAdapter: OpinionsRecyclerViewAdapter
     private lateinit var tagsAdapter: TagsRecyclerViewAdapter
     private lateinit var stepsAdapter: StepsRecyclerViewAdapter
-    private lateinit var viewManager: GridLayoutManager
+    private lateinit var viewManager: LinearLayoutManager
     private lateinit var tagsViewManager: StaggeredGridLayoutManager
-    private lateinit var stepsViewManager: GridLayoutManager
     private lateinit var guide: Guide
 
     private var myRate: Float = -1F
@@ -77,23 +73,23 @@ class SingleGuideActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_single_guide)
-        setSupportActionBar(findViewById(R.id.toolbar))
+        binding = ActivitySingleGuideBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        layoutOpinionAdded.visibility = View.GONE
+        binding.content.contentMyRate.layoutOpinionAdded.visibility = View.GONE
 
         guide = intent.extras!!.get(GUIDE_KEY) as Guide
 
-        viewManager = GridLayoutManager(this, 1)
+        viewManager = LinearLayoutManager(this)
         tagsViewManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL)
-        stepsViewManager = GridLayoutManager(this, 1)
-        adapter = OpinionsRecyclerViewAdapter(this)
+        opinionsAdapter = OpinionsRecyclerViewAdapter(this)
         tagsAdapter = TagsRecyclerViewAdapter(false, null)
         stepsAdapter = StepsRecyclerViewAdapter(null)
 
         usersViewModel.allUsers.observe(this, {
-            adapter.setUsersList(ArrayList(it))
+            opinionsAdapter.setUsersList(ArrayList(it))
             usersList = ArrayList(it)
             for (user in usersList) {
                 if (user.uid == FirebaseAuth.getInstance().currentUser!!.uid) {
@@ -104,32 +100,34 @@ class SingleGuideActivity : AppCompatActivity() {
             setUpUI(guide)
         })
 
-        recyclerView = findViewById<RecyclerView>(R.id.recyclerView).apply {
+        opinionsRecyclerView = binding.content.opinionsRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
-            adapter = this@SingleGuideActivity.adapter
+            adapter = this@SingleGuideActivity.opinionsAdapter
             addItemDecoration(ItemDecoration(0, 0))
         }
 
-        tagsRecyclerView = findViewById<RecyclerView>(R.id.tagsRecyclerView).apply {
+        tagsRecyclerView = binding.content.tagsRecyclerView.apply {
             setHasFixedSize(true)
             adapter = tagsAdapter
             layoutManager = tagsViewManager
             addItemDecoration(ItemDecoration())
         }
 
-        stepsRecyclerView = findViewById<RecyclerView>(R.id.stepsRecyclerView).apply {
+        stepsRecyclerView = binding.content.stepsRecyclerView.apply {
             setHasFixedSize(true)
             adapter = stepsAdapter
-            layoutManager = stepsViewManager
+            layoutManager = LinearLayoutManager(this@SingleGuideActivity)
             addItemDecoration(ItemDecoration())
         }
 
-        nestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, _ ->
-            if (scrollY >= -(v.measuredHeight - v.getChildAt(0).measuredHeight)) {
-                adapter.addMore()
+        binding.content.nestedScrollView.setOnScrollChangeListener(
+            NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, _ ->
+                if (scrollY >= -(v.measuredHeight - v.getChildAt(0).measuredHeight)) {
+                    opinionsAdapter.addMore()
+                }
             }
-        })
+        )
 
         setUpUI(guide)
         guidesViewModel.allAddedGuides.observe(this, {
@@ -141,12 +139,12 @@ class SingleGuideActivity : AppCompatActivity() {
             }
         })
 
-        editMyOpinion.setOnClickListener {
+        binding.content.contentMyRate.editMyOpinion.setOnClickListener {
             RateDialog.newInstance(myRate, guidesViewModel, guide, false)
                 .show(supportFragmentManager, "RateDialog")
         }
 
-        myOpinionSettings.setOnClickListener { view ->
+        binding.content.contentMyRate.myOpinionSettings.setOnClickListener { view ->
             val popup = PopupMenu(this, view)
             popup.inflate(R.menu.menu_settings_opinion)
             popup.setOnMenuItemClickListener { item: MenuItem? ->
@@ -176,7 +174,7 @@ class SingleGuideActivity : AppCompatActivity() {
             popup.show()
         }
 
-        ratingByMe.setOnRatingBarChangeListener { _, rating, fromUser ->
+        binding.content.contentMyRate.ratingByMe.setOnRatingBarChangeListener { _, rating, fromUser ->
             if (fromUser && rating > 0) {
                 RateDialog.newInstance(rating, guidesViewModel, guide, true)
                     .show(supportFragmentManager, "RateDialog")
@@ -187,32 +185,32 @@ class SingleGuideActivity : AppCompatActivity() {
     }
 
     private fun setUpLayoutsLogListeners() {
-        layoutGuideContent.setOnLongClickListener {
+        binding.content.layoutGuideContent.setOnLongClickListener {
             val toast =
-                Toast.makeText(this.applicationContext, R.string.guide_content, Toast.LENGTH_LONG)
+                Toast.makeText(this, R.string.guide_content, Toast.LENGTH_LONG)
             toast.setGravity(Gravity.CENTER, 0, 0)//TODO repair this toast ? somehow
             toast.show()
-            ExportGuideDialog.newInstance(guide, layoutGuideContent, this)
+            ExportGuideDialog.newInstance(guide, binding.content.layoutGuideContent, this)
                 .show(supportFragmentManager, "Export to PDF")
             return@setOnLongClickListener true
         }
-        layoutAuthorInfo.setOnLongClickListener {
+        binding.content.contentAuthorInfo.layoutAuthorInfo.setOnLongClickListener {
             Toast.makeText(this, R.string.guide_author, Toast.LENGTH_SHORT).show()
             return@setOnLongClickListener true
         }
-        layoutMyOpinion.setOnLongClickListener {
+        binding.content.contentMyRate.layoutMyOpinion.setOnLongClickListener {
             Toast.makeText(this, R.string.rateIt, Toast.LENGTH_SHORT).show()
             return@setOnLongClickListener true
         }
-        layoutRatings.setOnLongClickListener {
+        binding.content.contentOtherRatings.layoutRatings.setOnLongClickListener {
             Toast.makeText(this, R.string.rating, Toast.LENGTH_SHORT).show()
             return@setOnLongClickListener true
         }
-        layoutOpinions.setOnLongClickListener {
+        binding.content.layoutOpinions.setOnLongClickListener {
             Toast.makeText(this, R.string.opinions, Toast.LENGTH_SHORT).show()
             return@setOnLongClickListener true
         }
-        layoutGuideTags.setOnLongClickListener {
+        binding.content.layoutGuideTags.setOnLongClickListener {
             Toast.makeText(this, R.string.guide_tags, Toast.LENGTH_SHORT).show()
             return@setOnLongClickListener true
         }
@@ -221,7 +219,7 @@ class SingleGuideActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun setUpUI(guide: Guide) {
         this.guide = guide
-        toolbar_layout.title = guide.title
+        binding.toolbarLayout.title = guide.title
         stepsAdapter.setList(guide.steps)
 
         if (currentUser != null && currentUser!!.categories[1].guidesUIDs.contains(guide.uid)) {
@@ -243,17 +241,17 @@ class SingleGuideActivity : AppCompatActivity() {
             showRateIt()
         }
 
-        adapter.setList(guide.opinions)
+        opinionsAdapter.setList(guide.opinions)
         setUpOpinionsStats(guide.opinionsStats, guide.opinions.size)
 
         if (guide.rate >= 0) {
-            rate.text = String.format("%.1f", guide.rate)
-            ratingByOthers.rating = guide.rate
-            ratesCount.text = guide.opinions.size.toString()
+            binding.content.contentOtherRatings.rate.text = String.format("%.1f", guide.rate)
+            binding.content.contentOtherRatings.ratingByOthers.rating = guide.rate
+            binding.content.contentOtherRatings.ratesCount.text = guide.opinions.size.toString()
         } else {
-            rate.text = "N/A"
-            ratingByOthers.rating = 0F
-            ratesCount.text = guide.opinions.size.toString()
+            binding.content.contentOtherRatings.rate.text = "N/A"
+            binding.content.contentOtherRatings.ratingByOthers.rating = 0F
+            binding.content.contentOtherRatings.ratesCount.text = guide.opinions.size.toString()
         }
 
         setUpAuthorInfo(guide)
@@ -262,12 +260,15 @@ class SingleGuideActivity : AppCompatActivity() {
     private fun setUpAuthorInfo(guide: Guide) {
         val user = getUserByUID(guide.creatorUID)
         if (user != null) {
-            authorDisplayName.text = user.displayName
-            Picasso.get().load(user.photoURL).into(authorAvatar)
+            binding.content.contentAuthorInfo.authorDisplayName.text = user.displayName
+            Picasso.get().load(user.photoURL).into(binding.content.contentAuthorInfo.authorAvatar)
         } else {
-            authorDisplayName.text = getString(R.string.loading)
+            binding.content.contentAuthorInfo.authorDisplayName.text = getString(R.string.loading)
         }
-        authorCreationDate.text = getString(R.string.creation_date, guide.creationDate)
+        binding.content.contentAuthorInfo.authorCreationDate.text = getString(
+            R.string.creation_date,
+            guide.creationDate
+        )
     }
 
     private fun getUserByUID(uid: String): User? {
@@ -282,17 +283,22 @@ class SingleGuideActivity : AppCompatActivity() {
     private fun setUpOpinionsStats(stats: HashMap<String, Int>, opinionsCount: Int) {
         Log.i(TAG, "stats = $stats, opinionsCount = $opinionsCount")
         if (opinionsCount == 0 || stats.isEmpty()) {
-            progressBar5.progress = 0
-            progressBar4.progress = 0
-            progressBar3.progress = 0
-            progressBar2.progress = 0
-            progressBar1.progress = 0
+            binding.content.contentOtherRatings.progressBar5.progress = 0
+            binding.content.contentOtherRatings.progressBar4.progress = 0
+            binding.content.contentOtherRatings.progressBar3.progress = 0
+            binding.content.contentOtherRatings.progressBar2.progress = 0
+            binding.content.contentOtherRatings.progressBar1.progress = 0
         } else {
-            progressBar5.progress = countProgress(stats[OPINION_STATS_5.value]!!, opinionsCount)
-            progressBar4.progress = countProgress(stats[OPINION_STATS_4.value]!!, opinionsCount)
-            progressBar3.progress = countProgress(stats[OPINION_STATS_3.value]!!, opinionsCount)
-            progressBar2.progress = countProgress(stats[OPINION_STATS_2.value]!!, opinionsCount)
-            progressBar1.progress = countProgress(stats[OPINION_STATS_1.value]!!, opinionsCount)
+            binding.content.contentOtherRatings.progressBar5.progress =
+                countProgress(stats[OPINION_STATS_5.value]!!, opinionsCount)
+            binding.content.contentOtherRatings.progressBar4.progress =
+                countProgress(stats[OPINION_STATS_4.value]!!, opinionsCount)
+            binding.content.contentOtherRatings.progressBar3.progress =
+                countProgress(stats[OPINION_STATS_3.value]!!, opinionsCount)
+            binding.content.contentOtherRatings.progressBar2.progress =
+                countProgress(stats[OPINION_STATS_2.value]!!, opinionsCount)
+            binding.content.contentOtherRatings.progressBar1.progress =
+                countProgress(stats[OPINION_STATS_1.value]!!, opinionsCount)
         }
     }
 
@@ -302,28 +308,29 @@ class SingleGuideActivity : AppCompatActivity() {
 
     private fun showMyOpinion(myOpinion: Guide.Opinion?) {
         if (myOpinion != null) {
-            ratingByMe.visibility = View.GONE
-            layoutOpinionAdded.visibility = View.VISIBLE
-            myRateTitle.text = getString(R.string.yourOpinion)
+            binding.content.contentMyRate.ratingByMe.visibility = View.GONE
+            binding.content.contentMyRate.layoutOpinionAdded.visibility = View.VISIBLE
+            binding.content.contentMyRate.myRateTitle.text = getString(R.string.yourOpinion)
             Picasso
                 .get()
                 .load(FirebaseAuth.getInstance().currentUser!!.photoUrl.toString())
-                .into(myAvatar)
-            displayName.text = FirebaseAuth.getInstance().currentUser!!.displayName
-            myRatingBar.rating = myOpinion.rate
+                .into(binding.content.contentMyRate.myAvatar)
+            binding.content.contentMyRate.displayName.text =
+                FirebaseAuth.getInstance().currentUser!!.displayName
+            binding.content.contentMyRate.myRatingBar.rating = myOpinion.rate
             myRate = myOpinion.rate
-            myDate.text = myOpinion.date
-            myMainOpinion.text = myOpinion.opinion
+            binding.content.contentMyRate.myDate.text = myOpinion.date
+            binding.content.contentMyRate.myMainOpinion.text = myOpinion.opinion
         } else {
             showRateIt()
         }
     }
 
     private fun showRateIt() {
-        myRateTitle.text = getString(R.string.rateIt)
-        ratingByMe.rating = 0F
-        ratingByMe.visibility = View.VISIBLE
-        layoutOpinionAdded.visibility = View.GONE
+        binding.content.contentMyRate.myRateTitle.text = getString(R.string.rateIt)
+        binding.content.contentMyRate.ratingByMe.rating = 0F
+        binding.content.contentMyRate.ratingByMe.visibility = View.VISIBLE
+        binding.content.contentMyRate.layoutOpinionAdded.visibility = View.GONE
     }
 
     override fun onSupportNavigateUp(): Boolean {

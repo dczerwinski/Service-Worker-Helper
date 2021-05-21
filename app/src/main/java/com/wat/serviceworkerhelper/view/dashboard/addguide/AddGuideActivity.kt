@@ -9,25 +9,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import com.wat.serviceworkerhelper.R
+import com.wat.serviceworkerhelper.databinding.ActivityAddGuideBinding
 import com.wat.serviceworkerhelper.model.AppRoomDatabase
 import com.wat.serviceworkerhelper.model.entities.Guide
 import com.wat.serviceworkerhelper.model.entities.User
 import com.wat.serviceworkerhelper.model.repositories.GuideEntityRepository
 import com.wat.serviceworkerhelper.model.repositories.UserEntityRepository
-import com.wat.serviceworkerhelper.viewmodel.GuidesViewModel
-import com.wat.serviceworkerhelper.viewmodel.UsersViewModel
+import com.wat.serviceworkerhelper.utils.ItemDecoration
 import com.wat.serviceworkerhelper.view.dialogs.LoadingDialog
 import com.wat.serviceworkerhelper.view.steps.StepsRecyclerViewAdapter
 import com.wat.serviceworkerhelper.view.steps.StepsUpdater
 import com.wat.serviceworkerhelper.view.tags.OnTagAddListener
 import com.wat.serviceworkerhelper.view.tags.TagAddListener
 import com.wat.serviceworkerhelper.view.tags.TagsRecyclerViewAdapter
-import com.wat.serviceworkerhelper.utils.ItemDecoration
-import com.google.android.material.appbar.CollapsingToolbarLayout
-import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_add_guide.*
-import kotlinx.android.synthetic.main.content_add_guide.*
+import com.wat.serviceworkerhelper.viewmodel.GuidesViewModel
+import com.wat.serviceworkerhelper.viewmodel.UsersViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -40,6 +38,7 @@ class AddGuideActivity :
         private const val TAG = "AddGuideActivity"
     }
 
+    private lateinit var binding: ActivityAddGuideBinding
     private lateinit var tagsRecyclerView: RecyclerView
     private lateinit var stepsRecyclerView: RecyclerView
     private lateinit var tagsAdapter: TagsRecyclerViewAdapter
@@ -62,13 +61,11 @@ class AddGuideActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_guide)
-        setSupportActionBar(toolbar)
+        binding = ActivityAddGuideBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
 
-        val collapsingToolbarLayout: CollapsingToolbarLayout = findViewById(R.id.toolbar_layout)
-        collapsingToolbarLayout.title = getString(R.string.add_guide)
-
-        setSupportActionBar(toolbar)
+        binding.toolbarLayout.title = getString(R.string.add_guide)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
@@ -86,7 +83,7 @@ class AddGuideActivity :
         stepsAdapter = StepsRecyclerViewAdapter(this)
         stepsAdapter.setList(ArrayList(), PICK_IMAGE_CODE)
 
-        tagsRecyclerView = findViewById<RecyclerView>(R.id.tagsRecyclerView).apply {
+        tagsRecyclerView = binding.content.tagsRecyclerView.apply {
             setHasFixedSize(true)
             adapter = tagsAdapter
             layoutManager = tagsViewManager
@@ -99,18 +96,20 @@ class AddGuideActivity :
             addItemDecoration(ItemDecoration())
         }
 
-        tagsEditText.addTextChangedListener(
-            TagAddListener(tagsAdapter, tagsEditText, this)
+        binding.content.tagsEditText.addTextChangedListener(
+            TagAddListener(tagsAdapter, binding.content.tagsEditText, this)
         )
 
-        addButton.setOnClickListener {
+        binding.content.addButton.setOnClickListener {
             val uid = UUID.randomUUID().toString()
             val items = stepsAdapter.getItems()
-            if (guideNameEditText.text.toString().isNotEmpty() && items.isNotEmpty()) {
+            if (binding.content.guideNameEditText.text.toString().isNotEmpty()
+                && items.isNotEmpty()
+            ) {
                 loadingDialog.show()
                 val newGuide = Guide(
                     uid,
-                    guideNameEditText.text.toString(),
+                    binding.content.guideNameEditText.text.toString(),
                     tags = tagsAdapter.getTags(),
                     creatorUID = FirebaseAuth.getInstance().currentUser!!.uid,
                     creationDate = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())

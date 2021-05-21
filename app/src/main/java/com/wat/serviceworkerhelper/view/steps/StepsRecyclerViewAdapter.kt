@@ -4,20 +4,22 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.app.ActivityCompat.*
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.recyclerview.widget.RecyclerView
 import com.wat.serviceworkerhelper.R
+import com.wat.serviceworkerhelper.databinding.ItemAddStepBinding
+import com.wat.serviceworkerhelper.databinding.ItemStepBinding
 import com.wat.serviceworkerhelper.model.entities.Guide
-import kotlinx.coroutines.*
-import java.lang.Thread.sleep
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.coroutineContext
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class StepsRecyclerViewAdapter(
     val activity: Activity?
@@ -82,46 +84,45 @@ class StepsRecyclerViewAdapter(
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val inflater: LayoutInflater? = LayoutInflater.from(parent.context)
-        return when (viewType) {
-            Type.STEP.viewType -> {
-                val view = inflater!!.inflate(R.layout.item_step, parent, false)
-                StepViewHolder(view)
-            }
-            Type.ADD.viewType -> {
-                val view = inflater!!.inflate(R.layout.item_add_step, parent, false)
-                AddStepViewHolder(view)
-            }
-            else -> throw IllegalArgumentException("Wrong viewType!")
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
+        Type.STEP.viewType -> {
+            val binding = ItemStepBinding
+                .inflate(LayoutInflater.from(parent.context), parent, false)
+            StepViewHolder(binding)
         }
+        Type.ADD.viewType -> {
+            val binding = ItemAddStepBinding
+                .inflate(LayoutInflater.from(parent.context), parent, false)
+            AddStepViewHolder(binding)
+        }
+        else -> throw IllegalArgumentException("Wrong viewType!")
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
         when (getItemViewType(position)) {
             Type.STEP.viewType -> {
                 (holder as StepViewHolder).setUp(itemList[position].step!!, position + 1)
                 if (PICK_IMAGE_CODE > 0) {
-                    holder.deleteButton.visibility = View.VISIBLE
-                    holder.deleteButton.setOnClickListener {
+                    holder.binding.delete.visibility = View.VISIBLE
+                    holder.binding.delete.setOnClickListener {
                         itemList.removeAt(position)
                         notifyDataSetChanged()
                     }
                 } else {
-                    holder.deleteButton.visibility = View.GONE
+                    holder.binding.delete.visibility = View.GONE
                 }
             }
 
             Type.ADD.viewType -> {
                 if (itemList[position].uri != null) {
                     (holder as AddStepViewHolder).addPhoto(itemList[position].uri!!)
-                    holder.addPhotoButton.setOnClickListener {
+                    holder.binding.addPhoto.setOnClickListener {
                         itemList[position].uri = null
                         notifyDataSetChanged()
                     }
                 } else {
                     (holder as AddStepViewHolder).deletePhoto()
-                    holder.addPhotoButton.setOnClickListener {
+                    holder.binding.addPhoto.setOnClickListener {
                         val intent = Intent()
                         intent.type = "image/*"
                         intent.action = Intent.ACTION_GET_CONTENT
@@ -134,18 +135,21 @@ class StepsRecyclerViewAdapter(
                     }
                 }
 
-                holder.addItButton.setOnClickListener {
-                    if (holder.stepContent.text.toString().isNotEmpty()) {
+                holder.binding.addIt.setOnClickListener {
+                    if (holder.binding.stepContent.text.toString().isNotEmpty()) {
                         val uri = itemList.last().uri
                         itemList.removeLast()
                         itemList.add(
                             Item(
-                                Guide.Step(holder.stepContent.text.toString(), uri.toString()),
+                                Guide.Step(
+                                    holder.binding.stepContent.text.toString(),
+                                    uri.toString()
+                                ),
                                 uri,
                                 Type.STEP
                             )
                         )
-                        holder.stepContent.setText("")
+                        holder.binding.stepContent.setText("")
                         itemList.add(
                             Item(
                                 null,
@@ -154,20 +158,20 @@ class StepsRecyclerViewAdapter(
                             )
                         )
                         notifyDataSetChanged()
-                        CoroutineScope(Dispatchers.IO).launch {
-                            kotlin.runCatching {
-                                delay(50L)
-                                activity!!.runOnUiThread {
-                                    holder.stepContent.requestFocus()
-                                    holder.stepContent.isFocusableInTouchMode = true
-                                    val inputMetManager = it
-                                        .context
-                                        .getSystemService(Context.INPUT_METHOD_SERVICE
-                                        ) as InputMethodManager
-                                    inputMetManager.showSoftInput(
-                                        holder.stepContent,
-                                        InputMethodManager.SHOW_FORCED)
-                                }
+                        GlobalScope.launch {
+                            delay(50L)
+                            Handler(Looper.getMainLooper()).post {
+                                holder.binding.stepContent.requestFocus()
+                                holder.binding.stepContent.isFocusableInTouchMode = true
+                                val inputMetManager = it
+                                    .context
+                                    .getSystemService(
+                                        Context.INPUT_METHOD_SERVICE
+                                    ) as InputMethodManager
+                                inputMetManager.showSoftInput(
+                                    holder.binding.stepContent,
+                                    InputMethodManager.SHOW_FORCED
+                                )
                             }
                         }
                     } else {
@@ -182,7 +186,6 @@ class StepsRecyclerViewAdapter(
 
             else -> throw IllegalArgumentException("Wrong viewType!")
         }
-    }
 
     override fun getItemCount() = itemList.size
 

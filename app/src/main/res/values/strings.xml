@@ -143,4 +143,11 @@
     <string name="action_delete_user">Delete this user</string>
     <string name="user_deleted">User deleted!</string>
     <string name="user_created">User added successfully!</string>
+    <string name="change_password">Change password</string>
+    <string name="current_password">Current password</string>
+    <string name="new_password">New password</string>
+    <string name="reEnterNewPassword">Re-enter new password</string>
+    <string name="password_changed">Password changed!</string>
+    <string name="wrong_current_password">Wrong current password!</string>
+    <string name="deleted_user">Deleted user</string>
 </resources>

@@ -9,16 +9,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.wat.serviceworkerhelper.R
+import com.wat.serviceworkerhelper.databinding.FragmentManageUsersBinding
 import com.wat.serviceworkerhelper.model.AppRoomDatabase
 import com.wat.serviceworkerhelper.model.repositories.UserEntityRepository
-import com.wat.serviceworkerhelper.viewmodel.UsersViewModel
-import com.wat.serviceworkerhelper.view.dashboard.DashboardActivity
 import com.wat.serviceworkerhelper.utils.DashboardSearchController
 import com.wat.serviceworkerhelper.utils.ItemDecoration
+import com.wat.serviceworkerhelper.view.dashboard.DashboardActivity
+import com.wat.serviceworkerhelper.viewmodel.UsersViewModel
 
 class ManageUsersFragment : Fragment() {
 
+    private lateinit var binding: FragmentManageUsersBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ManageUsersRecyclerViewAdapter
     private lateinit var viewManager: GridLayoutManager
@@ -32,8 +33,8 @@ class ManageUsersFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val root = inflater.inflate(R.layout.fragment_manage_users, container, false)
+    ): View {
+        binding = FragmentManageUsersBinding.inflate(inflater, container, false)
 
         adapter = ManageUsersRecyclerViewAdapter(requireActivity())
         usersViewModel.allUsers.observe(viewLifecycleOwner, { users ->
@@ -48,7 +49,7 @@ class ManageUsersFragment : Fragment() {
             DashboardSearchController.getInstance().setCurrentAdapter(adapter)
         }
 
-        recyclerView = root.findViewById<RecyclerView>(R.id.recyclerView).apply {
+        recyclerView = binding.opinionsRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = this@ManageUsersFragment.adapter
@@ -63,10 +64,6 @@ class ManageUsersFragment : Fragment() {
             show()
         }
 
-        return root
-    }
-
-    companion object {
-        fun newInstance() = ManageUsersFragment()
+        return binding.root
     }
 }

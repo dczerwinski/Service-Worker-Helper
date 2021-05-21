@@ -2,8 +2,8 @@ package com.wat.serviceworkerhelper.view.steps
 
 import android.net.Uri
 import android.util.Log
-import com.wat.serviceworkerhelper.model.entities.Guide
 import com.google.firebase.storage.FirebaseStorage
+import com.wat.serviceworkerhelper.model.entities.Guide
 
 class StepsUpdater(
     private val onUploadEndListener: OnUploadEndListener

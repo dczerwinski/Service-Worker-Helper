@@ -19,9 +19,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:title="@string/settings"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:title="@string/settings"
             app:toolbarId="@+id/toolbar">
 
             <androidx.appcompat.widget.Toolbar
@@ -34,6 +34,8 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_settings" />
+    <include
+        android:id="@+id/content"
+        layout="@layout/content_settings" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -10,16 +10,13 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
 import com.wat.serviceworkerhelper.R
+import com.wat.serviceworkerhelper.databinding.ActivityUserBinding
 import com.wat.serviceworkerhelper.model.AppRoomDatabase
 import com.wat.serviceworkerhelper.model.entities.User
 import com.wat.serviceworkerhelper.model.repositories.UserEntityRepository
 import com.wat.serviceworkerhelper.viewmodel.UsersViewModel
-import com.squareup.picasso.Picasso
-import com.wat.serviceworkerhelper.view.dialogs.ReportDialog
-import kotlinx.android.synthetic.main.activity_user.*
-import kotlinx.android.synthetic.main.content_user.*
 
 class UserActivity : AppCompatActivity() {
 
@@ -33,38 +30,41 @@ class UserActivity : AppCompatActivity() {
         UsersViewModel.UsersViewModelFactory(userRepository)
     }
     private lateinit var user: User
+    private lateinit var binding: ActivityUserBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user)
-        setSupportActionBar(toolbar)
+        binding = ActivityUserBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
         user = intent.extras!!.get(USER_KEY) as User
-        toolbar_layout.title = user.displayName
-        displayName.text = user.displayName
-        email.text = user.email
+        binding.toolbarLayout.title = user.displayName
+        binding.content.displayName.text = user.displayName
+        binding.content.email.text = user.email
         val spinnerItems = arrayOf(getString(R.string.normal), "Admin")
         val arrayAdapter =
             ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, spinnerItems)
         arrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
-        userTypeSpinner.adapter = arrayAdapter
+        binding.content.userTypeSpinner.adapter = arrayAdapter
         if (user.userType == User.Type.ADMIN) {
-            userTypeSpinner.setSelection(1)
+            binding.content.userTypeSpinner.setSelection(1)
         } else {
-            userTypeSpinner.setSelection(0)
+            binding.content.userTypeSpinner.setSelection(0)
         }
-        Picasso.get().load(user.photoURL).into(avatar)
+        Picasso.get().load(user.photoURL).into(binding.content.avatar)
 
-        saveButton.setOnClickListener {
-            user.userType = User.Type.toType(userTypeSpinner.selectedItem.toString(), this)
+        binding.content.saveButton.setOnClickListener {
+            user.userType =
+                User.Type.toType(binding.content.userTypeSpinner.selectedItem.toString(), this)
             usersViewModel.update(user)
             Toast.makeText(this, R.string.user_changed, Toast.LENGTH_SHORT).show()
             finish()
         }
 
-        sendEmail.setOnClickListener {
+        binding.content.sendEmail.setOnClickListener {
             val intent = Intent(Intent.ACTION_SENDTO)
             intent.data = Uri.parse("mailto:${user.email}")
             intent.putExtra(Intent.EXTRA_EMAIL, user.email)

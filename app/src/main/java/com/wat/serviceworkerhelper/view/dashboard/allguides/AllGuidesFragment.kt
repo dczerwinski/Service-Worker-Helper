@@ -8,17 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.wat.serviceworkerhelper.R
+import com.wat.serviceworkerhelper.databinding.FragmentAllGuidesBinding
 import com.wat.serviceworkerhelper.model.AppRoomDatabase
 import com.wat.serviceworkerhelper.model.repositories.GuideEntityRepository
-import com.wat.serviceworkerhelper.viewmodel.GuidesViewModel
-import com.wat.serviceworkerhelper.view.dashboard.DashboardActivity
-import com.wat.serviceworkerhelper.view.dashboard.addguide.AddGuideActivity
 import com.wat.serviceworkerhelper.utils.DashboardSearchController
 import com.wat.serviceworkerhelper.utils.ItemDecoration
-import com.wat.serviceworkerhelper.utils.NetworkUtils
+import com.wat.serviceworkerhelper.view.dashboard.DashboardActivity
+import com.wat.serviceworkerhelper.view.dashboard.addguide.AddGuideActivity
+import com.wat.serviceworkerhelper.viewmodel.GuidesViewModel
 
 class AllGuidesFragment : Fragment() {
 
@@ -26,22 +25,22 @@ class AllGuidesFragment : Fragment() {
         private const val TAG = "AllGuidesFragment"
     }
 
+    private lateinit var binding: FragmentAllGuidesBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: AllGuidesRecyclerViewAdapter
-    private lateinit var viewManager: GridLayoutManager
+    private lateinit var viewManager: LinearLayoutManager
     private val database by lazy { AppRoomDatabase.getDatabase(requireContext()) }
     private val repository by lazy { GuideEntityRepository(database.guideDao()) }
     private val viewModel: GuidesViewModel by viewModels {
         GuidesViewModel.GuidesViewModelFactory(repository)
     }
-    private var isItFirstOpen = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val root = inflater.inflate(R.layout.fragment_all_guides, container, false)
+    ): View {
+        binding = FragmentAllGuidesBinding.inflate(inflater, container, false)
 
         adapter = AllGuidesRecyclerViewAdapter(requireActivity())
         viewModel.allAddedGuides.observe(viewLifecycleOwner, { guides ->
@@ -50,12 +49,12 @@ class AllGuidesFragment : Fragment() {
             Log.i(TAG, "setItems")
         })
 
-        viewManager = GridLayoutManager(requireContext(), 1)
+        viewManager = LinearLayoutManager(requireContext())
         if (!DashboardSearchController.getInstance().equals(adapter)) {
             DashboardSearchController.getInstance().setCurrentAdapter(adapter)
         }
 
-        recyclerView = root.findViewById<RecyclerView>(R.id.recyclerView).apply {
+        recyclerView = binding.opinionsRecyclerView.apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = this@AllGuidesFragment.adapter
@@ -70,6 +69,6 @@ class AllGuidesFragment : Fragment() {
             show()
         }
 
-        return root
+        return binding.root
     }
 }

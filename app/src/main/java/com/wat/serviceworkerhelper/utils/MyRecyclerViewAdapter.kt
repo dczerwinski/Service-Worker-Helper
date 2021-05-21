@@ -79,7 +79,5 @@ abstract class MyRecyclerViewAdapter<VH : RecyclerView.ViewHolder?, I>
     /**
      * @return Returns filter attached to recycler view.
      */
-    override fun getFilter(): Filter {
-        return filter
-    }
+    override fun getFilter() = filter
 }

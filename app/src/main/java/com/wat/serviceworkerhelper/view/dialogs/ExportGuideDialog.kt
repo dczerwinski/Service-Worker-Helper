@@ -8,12 +8,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.core.app.ShareCompat
 import androidx.core.content.FileProvider
-import com.wat.serviceworkerhelper.R
-import com.wat.serviceworkerhelper.model.entities.Guide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.wat.serviceworkerhelper.R
+import com.wat.serviceworkerhelper.databinding.DialogExportGuideBinding
+import com.wat.serviceworkerhelper.model.entities.Guide
 import java.io.File
 
 class ExportGuideDialog(
@@ -42,11 +42,10 @@ class ExportGuideDialog(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.dialog_export_guide, container, false)
-        val exportButton = view.findViewById<LinearLayout>(R.id.layout_export_to_pdf)
+    ): View {
+        val binding = DialogExportGuideBinding.inflate(inflater, container, false)
 
-        exportButton.setOnClickListener {
+        binding.layoutExportToPdf.setOnClickListener {
             val document = PdfDocument()
             val pageInfo = PdfDocument.PageInfo.Builder(
                 toPrintView.measuredWidth,
@@ -90,6 +89,6 @@ class ExportGuideDialog(
             startActivity(intent)
         }
 
-        return view
+        return binding.root
     }
 }

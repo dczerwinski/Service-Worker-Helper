@@ -1,18 +1,28 @@
-package com.wat.serviceworkerhelper.view.dashboard.allguides.singleguide
+package com.wat.serviceworkerhelper.view.opinions
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.wat.serviceworkerhelper.R
+import com.wat.serviceworkerhelper.databinding.ItemLoadingBinding
+import com.wat.serviceworkerhelper.databinding.ItemNoItemsBinding
+import com.wat.serviceworkerhelper.databinding.ItemOpinionBinding
 import com.wat.serviceworkerhelper.model.entities.Guide
 import com.wat.serviceworkerhelper.model.entities.User
+import com.wat.serviceworkerhelper.view.dashboard.allguides.singleguide.SingleGuideActivity
 import kotlin.math.min
 
 class OpinionsRecyclerViewAdapter(
     private val activity: SingleGuideActivity
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    companion object {
+        private const val VIEW_TYPE_ITEM = 0
+        private const val VIEW_TYPE_LOADING = 1
+        private const val VIEW_TYPE_NO_ITEMS = 2
+
+        private const val TAG = "OpinionsRVA"
+    }
 
     private var opinionsList = ArrayList<Guide.Opinion?>()
     private var tempOpinionsList = ArrayList<Guide.Opinion>()
@@ -55,15 +65,6 @@ class OpinionsRecyclerViewAdapter(
         notifyDataSetChanged()
     }
 
-    private fun getUserInfo(uid: String): User? {
-        allUsers.forEach {
-            if (it.uid == uid) {
-                return it
-            }
-        }
-        return null
-    }
-
     fun addMore() {
         if (tempOpinionsList.isNotEmpty() && !isLoading) {
             isLoading = true
@@ -86,25 +87,33 @@ class OpinionsRecyclerViewAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val inflater: LayoutInflater? = LayoutInflater.from(parent.context)
-        val view: View?
-        return when (viewType) {
-            VIEW_TYPE_ITEM -> {
-                view = inflater!!.inflate(R.layout.item_opinion, parent, false)
-                OpinionsViewHolder(view)
+    private fun getUserInfo(uid: String): User? {
+        allUsers.forEach {
+            if (it.uid == uid) {
+                return it
             }
-            VIEW_TYPE_LOADING -> {
-                view = inflater!!.inflate(R.layout.item_loading, parent, false)
-                LoadingViewHolder(view)
-            }
-            VIEW_TYPE_NO_ITEMS -> {
-                view = inflater!!.inflate(R.layout.item_no_items, parent, false)
-                NoItemsViewHolder(view)
-            }
-            else -> {
-                throw IllegalArgumentException("Wrong view type!")
-            }
+        }
+        return null
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
+        VIEW_TYPE_ITEM -> {
+            val binding = ItemOpinionBinding
+                .inflate(LayoutInflater.from(parent.context), parent, false)
+            OpinionsViewHolder(binding)
+        }
+        VIEW_TYPE_LOADING -> {
+            val binding = ItemLoadingBinding
+                .inflate(LayoutInflater.from(parent.context), parent, false)
+            LoadingViewHolder(binding)
+        }
+        VIEW_TYPE_NO_ITEMS -> {
+            val binding = ItemNoItemsBinding
+                .inflate(LayoutInflater.from(parent.context), parent, false)
+            NoItemsViewHolder(binding)
+        }
+        else -> {
+            throw IllegalArgumentException("Wrong view type!")
         }
     }
 
@@ -130,13 +139,5 @@ class OpinionsRecyclerViewAdapter(
             opinionsList[position] == null -> VIEW_TYPE_LOADING
             else -> VIEW_TYPE_ITEM
         }
-    }
-
-    companion object {
-        private const val VIEW_TYPE_ITEM = 0
-        private const val VIEW_TYPE_LOADING = 1
-        private const val VIEW_TYPE_NO_ITEMS = 2
-
-        private const val TAG = "OpinionsRVA"
     }
 }

@@ -117,4 +117,11 @@
     <string name="action_delete_user">Usuń tego użytkownika</string>
     <string name="user_deleted">Użytkownik usunięty!</string>
     <string name="user_created">Pomyślnie dodano uzytkownika!</string>
+    <string name="change_password">Zmień hasło</string>
+    <string name="current_password">Obecne hasło</string>
+    <string name="new_password">Nowe hasło</string>
+    <string name="reEnterNewPassword">Powtórz nowe hasło</string>
+    <string name="password_changed">Hasło zmienione!</string>
+    <string name="wrong_current_password">Błędne obecne hasło!</string>
+    <string name="deleted_user">Usunięty użytkownik</string>
 </resources>

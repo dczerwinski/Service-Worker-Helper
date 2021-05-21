@@ -6,9 +6,9 @@
     tools:context=".view.dashboard.allguides.AllGuidesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layoutAnimation="@anim/fall_down_animation"
+        android:id="@+id/opinionsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layoutAnimation="@anim/fall_down_animation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -69,7 +69,7 @@ class MyGuidesFragment : Fragment() {
             DashboardSearchController.getInstance().setCurrentAdapter(adapter)
         }
 
-        recyclerView = root.findViewById<RecyclerView>(R.id.recyclerView).apply {
+        recyclerView = root.findViewById<RecyclerView>(R.id.opinionsRecyclerView).apply {
             setHasFixedSize(true)
             layoutManager = viewManager
             adapter = this@MyGuidesFragment.adapter

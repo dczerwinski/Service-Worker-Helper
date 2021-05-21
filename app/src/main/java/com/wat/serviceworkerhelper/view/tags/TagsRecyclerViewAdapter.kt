@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.wat.serviceworkerhelper.R
+import com.wat.serviceworkerhelper.databinding.ItemTagBinding
 
 class TagsRecyclerViewAdapter(
     private val isEditable: Boolean,
@@ -29,21 +29,21 @@ class TagsRecyclerViewAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagViewHolder {
-        val inflater: LayoutInflater? = LayoutInflater.from(parent.context)
-        val view = inflater!!.inflate(R.layout.item_tag, parent, false)
-        return TagViewHolder(view)
+        val binding = ItemTagBinding
+            .inflate(LayoutInflater.from(parent.context), parent, false)
+        return TagViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: TagViewHolder, position: Int) {
         holder.setUp(tagsList[position], isEditable)
         if (isEditable) {
-            holder.xIcon.setOnClickListener {
+            holder.xIcon().setOnClickListener {
                 tagsList.removeAt(position)
                 notifyDataSetChanged()
                 onTagAddListener?.onTagAdd()
             }
         } else {
-            holder.xIcon.visibility = View.GONE
+            holder.xIcon().visibility = View.GONE
         }
     }
 

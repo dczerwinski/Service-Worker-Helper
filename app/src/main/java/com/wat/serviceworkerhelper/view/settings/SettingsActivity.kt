@@ -10,19 +10,19 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.wat.serviceworkerhelper.R
-import com.wat.serviceworkerhelper.model.AppRoomDatabase
-import com.wat.serviceworkerhelper.model.entities.User
-import com.wat.serviceworkerhelper.model.repositories.UserEntityRepository
-import com.wat.serviceworkerhelper.viewmodel.UsersViewModel
-import com.wat.serviceworkerhelper.view.dashboard.manageusers.UserActivity.Companion.USER_KEY
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
+import com.wat.serviceworkerhelper.R
+import com.wat.serviceworkerhelper.databinding.ActivitySettingsBinding
+import com.wat.serviceworkerhelper.model.AppRoomDatabase
+import com.wat.serviceworkerhelper.model.entities.User
+import com.wat.serviceworkerhelper.model.repositories.UserEntityRepository
+import com.wat.serviceworkerhelper.view.dashboard.manageusers.UserActivity.Companion.USER_KEY
+import com.wat.serviceworkerhelper.view.dialogs.ChangePasswordDialog
 import com.wat.serviceworkerhelper.view.dialogs.LoadingDialog
-import kotlinx.android.synthetic.main.activity_settings.*
-import kotlinx.android.synthetic.main.content_settings.*
+import com.wat.serviceworkerhelper.viewmodel.UsersViewModel
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -33,6 +33,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private lateinit var user: User
     private lateinit var originalUser: User
+    private lateinit var binding: ActivitySettingsBinding
     private var fileUri: Uri? = null
     private val database by lazy { AppRoomDatabase.getDatabase(this) }
     private val userRepository by lazy { UserEntityRepository(database.userDao()) }
@@ -45,8 +46,9 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
-        setSupportActionBar(toolbar)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
@@ -66,11 +68,16 @@ class SettingsActivity : AppCompatActivity() {
             }
         })
 
-        chooseButton.setOnClickListener {
+        binding.content.chooseButton.setOnClickListener {
             choosePhoto(null)
         }
 
-        saveButton.setOnClickListener {
+        binding.content.changePassword.setOnClickListener {
+            ChangePasswordDialog(FirebaseAuth.getInstance().currentUser!!)
+                .show(supportFragmentManager, "ChangePasswordDialog")
+        }
+
+        binding.content.saveButton.setOnClickListener {
             loadingDialog.show()
             save()
         }
@@ -85,7 +92,7 @@ class SettingsActivity : AppCompatActivity() {
             data.data != null
         ) {
             fileUri = data.data
-            Picasso.get().load(fileUri).into(avatar)
+            Picasso.get().load(fileUri).into(binding.content.avatar)
         }
     }
 
@@ -95,9 +102,9 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun setUpUI(user: User) {
-        Picasso.get().load(user.photoURL).into(avatar)
-        displayName.setText(user.displayName)
-        email.setText(user.email)
+        Picasso.get().load(user.photoURL).into(binding.content.avatar)
+        binding.content.displayName.setText(user.displayName)
+        binding.content.email.setText(user.email)
     }
 
     fun choosePhoto(view: View?) {
@@ -112,8 +119,8 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun save() {
         val saveController = SaveController(usersViewModel, this, loadingDialog, this.user)
-        val newEmail = email.text.toString()
-        val newDisplayName = displayName.text.toString()
+        val newEmail = binding.content.email.text.toString()
+        val newDisplayName = binding.content.displayName.text.toString()
         if (fileUri != null) {
             uploadImage(saveController)
         }

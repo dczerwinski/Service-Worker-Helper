@@ -1,63 +1,68 @@
 package com.wat.serviceworkerhelper.view.dashboard.myguides
 
 import android.util.Log
-import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.wat.serviceworkerhelper.R
+import com.wat.serviceworkerhelper.databinding.ItemGuideWithStatusBinding
 import com.wat.serviceworkerhelper.model.entities.Guide
-import com.wat.serviceworkerhelper.view.dashboard.common.GuideViewHolder
+import com.wat.serviceworkerhelper.utils.StepsUtils
 
 class GuideWithStatusViewHolder(
-    itemView: View
-) : GuideViewHolder(itemView) {
+    private val binding: ViewBinding
+) : RecyclerView.ViewHolder(binding.root) {
 
     companion object {
         private const val TAG = "GuidesSViewHolder"
     }
 
-    private val itemStatus: TextView = itemView.findViewById(R.id.itemStatus)
-    private val layoutStatus: LinearLayout = itemView.findViewById(R.id.layoutStatus)
-    private val iconInfo: ImageView = itemView.findViewById(R.id.iconInfo)
-
-    override fun bind(guide: Guide) {
+    fun bind(guide: Guide) {
+        if (binding !is ItemGuideWithStatusBinding)
+            throw IllegalArgumentException("Wrong binding type!")
         var info = ""
         when (guide.guideStatus) {
             Guide.Status.PENDING -> {
-                layoutStatus.background = ResourcesCompat.getDrawable(
+                binding.layoutStatus.background = ResourcesCompat.getDrawable(
                     itemView.context.resources,
                     R.drawable.radius_pending,
                     null
                 )
-                itemStatus.text = itemView.context.getString(R.string.status_pending)
+                binding.itemStatus.text = itemView.context.getString(R.string.status_pending)
                 info = itemView.context.getString(R.string.status_pending)
             }
             Guide.Status.REPORTED -> {
-                layoutStatus.background = ResourcesCompat.getDrawable(
+                binding.layoutStatus.background = ResourcesCompat.getDrawable(
                     itemView.context.resources,
                     R.drawable.radius_reported,
                     null
                 )
-                itemStatus.text = itemView.context.getString(R.string.status_reported)
+                binding.itemStatus.text = itemView.context.getString(R.string.status_reported)
                 info = itemView.context.getString(R.string.status_reported)
             }
             else -> Log.e(TAG, "Wrong type!")
         }
 
-        iconInfo.setOnClickListener {
+        binding.iconInfo.setOnClickListener {
             showInfo(info)
         }
-        layoutStatus.setOnClickListener {
+        binding.layoutStatus.setOnClickListener {
             showInfo(info)
         }
 
-        super.bind(guide)
+        binding.itemTitle.text = guide.title
+        binding.itemDescription.text = StepsUtils.toString(guide.steps)
+        if (guide.opinions.isEmpty()) {
+            binding.itemRating.text = "N/A"
+        } else {
+            binding.itemRating.text = String.format("%.1f", guide.rate)
+        }
     }
 
     private fun showInfo(info: String) {
         Toast.makeText(itemView.context, info, Toast.LENGTH_SHORT).show()
     }
+
+    fun getBinding(): ItemGuideWithStatusBinding = binding as ItemGuideWithStatusBinding
 }

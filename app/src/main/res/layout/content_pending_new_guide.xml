@@ -12,39 +12,39 @@
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
         android:layout_marginHorizontal="3dp"
         android:layout_marginVertical="10dp"
-        android:layout_gravity="center_horizontal"
-        android:gravity="top">
+        android:gravity="top"
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/layoutGuideTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="@dimen/radius_padding"
-            android:paddingBottom="@dimen/radius_padding"
-            android:paddingTop="@dimen/radius_padding_top"
+            android:layout_gravity="center_horizontal"
             android:background="@drawable/radius_border"
             android:foreground="@drawable/ripple_button"
-            android:layout_gravity="center_horizontal"
-            android:gravity="top">
+            android:gravity="top"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/radius_padding"
+            android:paddingTop="@dimen/radius_padding_top"
+            android:paddingBottom="@dimen/radius_padding">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/guide_title"
                 android:textColor="@color/item_title_color"
-                android:textStyle="bold"
-                android:textSize="21sp" />
+                android:textSize="21sp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/guideNameEditText"
                 android:layout_width="match_parent"
-                android:layout_marginBottom="10dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/guide_name"/>
+                android:layout_marginBottom="10dp"
+                android:hint="@string/guide_name" />
         </LinearLayout>
 
         <Space
@@ -55,28 +55,28 @@
             android:id="@+id/layoutGuideContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="@dimen/radius_padding"
-            android:paddingBottom="@dimen/radius_padding"
-            android:paddingTop="@dimen/radius_padding_top"
+            android:layout_gravity="center_horizontal"
             android:background="@drawable/radius_border"
             android:foreground="@drawable/ripple_button"
-            android:layout_gravity="center_horizontal"
-            android:gravity="top">
+            android:gravity="top"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/radius_padding"
+            android:paddingTop="@dimen/radius_padding_top"
+            android:paddingBottom="@dimen/radius_padding">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/guide_content"
                 android:textColor="@color/item_title_color"
-                android:textStyle="bold"
-                android:textSize="21sp" />
+                android:textSize="21sp"
+                android:textStyle="bold" />
 
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/stepsRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <Space
@@ -87,22 +87,22 @@
             android:id="@+id/layoutGuideTags"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingHorizontal="@dimen/radius_padding"
-            android:paddingBottom="@dimen/radius_padding"
-            android:paddingTop="@dimen/radius_padding_top"
+            android:layout_gravity="center_horizontal"
             android:background="@drawable/radius_border"
             android:foreground="@drawable/ripple_button"
-            android:layout_gravity="center_horizontal"
-            android:gravity="top">
+            android:gravity="top"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/radius_padding"
+            android:paddingTop="@dimen/radius_padding_top"
+            android:paddingBottom="@dimen/radius_padding">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/guide_tags"
                 android:textColor="@color/item_title_color"
-                android:textStyle="bold"
-                android:textSize="21sp" />
+                android:textSize="21sp"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/tagsEditText"
@@ -124,26 +124,26 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
 
             <Button
-                style="@style/AppButtonStyle"
                 android:id="@+id/declineButton"
+                style="@style/AppButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginBottom="10dp"
-                android:text="@string/decline"/>
+                android:text="@string/decline" />
 
             <Button
-                style="@style/AppButtonStyle"
                 android:id="@+id/acceptButton"
+                style="@style/AppButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:layout_marginBottom="10dp"
-                android:text="@string/accept"/>
+                android:text="@string/accept" />
         </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

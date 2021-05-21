@@ -9,30 +9,29 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.wat.serviceworkerhelper.R
+import com.wat.serviceworkerhelper.databinding.ActivitySingleReportedGuideBinding
 import com.wat.serviceworkerhelper.model.AppRoomDatabase
 import com.wat.serviceworkerhelper.model.entities.Guide
 import com.wat.serviceworkerhelper.model.repositories.GuideEntityRepository
 import com.wat.serviceworkerhelper.model.repositories.ReportEntityRepository
-import com.wat.serviceworkerhelper.viewmodel.GuidesViewModel
-import com.wat.serviceworkerhelper.viewmodel.ReportsViewModel
+import com.wat.serviceworkerhelper.utils.ItemDecoration
 import com.wat.serviceworkerhelper.view.dialogs.LoadingDialog
 import com.wat.serviceworkerhelper.view.steps.StepsRecyclerViewAdapter
 import com.wat.serviceworkerhelper.view.steps.StepsUpdater
 import com.wat.serviceworkerhelper.view.tags.OnTagAddListener
 import com.wat.serviceworkerhelper.view.tags.TagsRecyclerViewAdapter
-import com.wat.serviceworkerhelper.utils.ItemDecoration
-import kotlinx.android.synthetic.main.activity_single_reported_guide.*
-import kotlinx.android.synthetic.main.content_single_reported_guide.*
+import com.wat.serviceworkerhelper.viewmodel.GuidesViewModel
+import com.wat.serviceworkerhelper.viewmodel.ReportsViewModel
 
 class SingleReportedGuideActivity :
     AppCompatActivity(), OnTagAddListener, StepsUpdater.OnUploadEndListener {
 
     companion object {
         private const val PICK_IMAGE_CODE = 61
-        private const val TAG = "SingleReportedGuideActivity"
         const val GUIDE_KEY = "Somekey"
     }
 
+    private lateinit var binding: ActivitySingleReportedGuideBinding
     private lateinit var guide: Guide
     private lateinit var tagsRecyclerView: RecyclerView
     private lateinit var stepsRecyclerView: RecyclerView
@@ -56,8 +55,9 @@ class SingleReportedGuideActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_single_reported_guide)
-        setSupportActionBar(toolbar)
+        binding = ActivitySingleReportedGuideBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
@@ -123,8 +123,8 @@ class SingleReportedGuideActivity :
     }
 
     private fun setUpUI(guide: Guide) {
-        toolbar_layout.title = guide.title
-        guideNameEditText.setText(guide.title)
+        binding.toolbarLayout.title = guide.title
+        binding.content.guideNameEditText.setText(guide.title)
         tagsAdapter.setList(guide.tags)
         stepsAdapter.setList(guide.steps, PICK_IMAGE_CODE)
         tagsViewManager.spanCount = (guide.tags.size / 4) + 1
@@ -135,7 +135,7 @@ class SingleReportedGuideActivity :
         reportsViewModel.allReports.observe(this, {
             it.forEach { report ->
                 if (report.guideUID == guide.uid) {
-                    reportDescription.text = report.description
+                    binding.content.reportDescription.text = report.description
                 }
             }
         })
@@ -151,7 +151,7 @@ class SingleReportedGuideActivity :
     }
 
     private fun setUpButtons() {
-        declineButton.setOnClickListener {
+        binding.content.declineButton.setOnClickListener {
             StepsUpdater.delete(guide.uid, guide.steps.size)
             guidesViewModel.delete(guide.uid)
             reportsViewModel.delete(guide.uid)
@@ -159,11 +159,11 @@ class SingleReportedGuideActivity :
             finish()
         }
 
-        acceptButton.setOnClickListener {
+        binding.content.acceptButton.setOnClickListener {
             loadingDialog.show()
             val g = Guide(
                 guide.uid,
-                guideNameEditText.text.toString(),
+                binding.content.guideNameEditText.text.toString(),
                 ArrayList(),
                 tagsAdapter.getTags(),
                 guide.opinions,
@@ -178,19 +178,19 @@ class SingleReportedGuideActivity :
     }
 
     private fun setUpLayoutsLogListeners() {
-        layoutGuideTitle.setOnLongClickListener {
+        binding.content.layoutGuideTitle.setOnLongClickListener {
             Toast.makeText(this, R.string.guide_title, Toast.LENGTH_LONG).show()
             return@setOnLongClickListener true
         }
-        layoutGuideContent.setOnLongClickListener {
+        binding.content.layoutGuideContent.setOnLongClickListener {
             Toast.makeText(this, R.string.guide_content, Toast.LENGTH_LONG).show()
             return@setOnLongClickListener true
         }
-        layoutGuideTags.setOnLongClickListener {
+        binding.content.layoutGuideTags.setOnLongClickListener {
             Toast.makeText(this, R.string.guide_tags, Toast.LENGTH_SHORT).show()
             return@setOnLongClickListener true
         }
-        layoutGuideReport.setOnLongClickListener {
+        binding.content.layoutGuideReport.setOnLongClickListener {
             Toast.makeText(this, R.string.guide_report, Toast.LENGTH_LONG).show()
             return@setOnLongClickListener true
         }

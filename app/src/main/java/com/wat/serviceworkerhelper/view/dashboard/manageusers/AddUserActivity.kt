@@ -8,13 +8,12 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.wat.serviceworkerhelper.R
+import com.wat.serviceworkerhelper.databinding.ActivityAddUserBinding
 import com.wat.serviceworkerhelper.model.AppRoomDatabase
 import com.wat.serviceworkerhelper.model.entities.User
 import com.wat.serviceworkerhelper.model.repositories.UserEntityRepository
 import com.wat.serviceworkerhelper.utils.TextChangeListener
 import com.wat.serviceworkerhelper.viewmodel.UsersViewModel
-import kotlinx.android.synthetic.main.activity_add_user.*
-import kotlinx.android.synthetic.main.content_add_user.*
 import java.util.*
 
 class AddUserActivity : AppCompatActivity() {
@@ -23,6 +22,7 @@ class AddUserActivity : AppCompatActivity() {
         private const val TAG = "AddUserActivity"
     }
 
+    private lateinit var binding: ActivityAddUserBinding
     private val database by lazy { AppRoomDatabase.getDatabase(this) }
     private val userRepository by lazy { UserEntityRepository(database.userDao()) }
     private val usersViewModel: UsersViewModel by viewModels {
@@ -31,32 +31,33 @@ class AddUserActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_user)
-        setSupportActionBar(findViewById(R.id.toolbar))
+        binding = ActivityAddUserBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        toolbar_layout.title = getString(R.string.add_user)
+        binding.toolbarLayout.title = getString(R.string.add_user)
 
         val spinnerItems = arrayOf(getString(R.string.normal), "Admin")
         val arrayAdapter =
             ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, spinnerItems)
         arrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
-        userTypeSpinner.adapter = arrayAdapter
+        binding.content.userTypeSpinner.adapter = arrayAdapter
 
-        emailEditText.addTextChangedListener(object : TextChangeListener {
+        binding.content.emailEditText.addTextChangedListener(object : TextChangeListener {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (!isEmailValid(s.toString())) {
-                    emailEditText.setTextColor(Color.RED)
+                    binding.content.emailEditText.setTextColor(Color.RED)
                 } else {
-                    emailEditText.setTextColor(Color.BLACK)
+                    binding.content.emailEditText.setTextColor(Color.BLACK)
                 }
             }
         })
 
-        addUserButton.setOnClickListener {
-            val email = emailEditText.text.toString()
+        binding.content.addUserButton.setOnClickListener {
+            val email = binding.content.emailEditText.text.toString()
             if (isEmailValid(email)) {
-                val userType = if (userTypeSpinner.selectedItemId == 0L) {
+                val userType = if (binding.content.userTypeSpinner.selectedItemId == 0L) {
                     User.Type.NORMAL
                 } else {
                     User.Type.ADMIN
@@ -86,6 +87,6 @@ class AddUserActivity : AppCompatActivity() {
         return true
     }
 
-    private fun isEmailValid(email: String): Boolean =
+    private fun isEmailValid(email: String) =
         !(email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches())
 }

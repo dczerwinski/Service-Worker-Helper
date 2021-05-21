@@ -11,20 +11,19 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.wat.serviceworkerhelper.R
+import com.wat.serviceworkerhelper.databinding.ActivityPendingNewGuideBinding
 import com.wat.serviceworkerhelper.model.AppRoomDatabase
 import com.wat.serviceworkerhelper.model.entities.Guide
 import com.wat.serviceworkerhelper.model.repositories.GuideEntityRepository
-import com.wat.serviceworkerhelper.viewmodel.GuidesViewModel
+import com.wat.serviceworkerhelper.utils.ItemDecoration
+import com.wat.serviceworkerhelper.utils.TextChangeListener
 import com.wat.serviceworkerhelper.view.dialogs.LoadingDialog
 import com.wat.serviceworkerhelper.view.steps.StepsRecyclerViewAdapter
 import com.wat.serviceworkerhelper.view.steps.StepsUpdater
 import com.wat.serviceworkerhelper.view.tags.OnTagAddListener
 import com.wat.serviceworkerhelper.view.tags.TagAddListener
 import com.wat.serviceworkerhelper.view.tags.TagsRecyclerViewAdapter
-import com.wat.serviceworkerhelper.utils.ItemDecoration
-import com.wat.serviceworkerhelper.utils.TextChangeListener
-import kotlinx.android.synthetic.main.activity_pending_new_guide.*
-import kotlinx.android.synthetic.main.content_pending_new_guide.*
+import com.wat.serviceworkerhelper.viewmodel.GuidesViewModel
 
 class PendingNewGuideActivity :
     AppCompatActivity(), OnTagAddListener, StepsUpdater.OnUploadEndListener {
@@ -35,6 +34,7 @@ class PendingNewGuideActivity :
         const val GUIDE_KEY = "GUIDE_KEY"
     }
 
+    private lateinit var binding: ActivityPendingNewGuideBinding
     private lateinit var tagsRecyclerView: RecyclerView
     private lateinit var stepsRecyclerView: RecyclerView
     private lateinit var tagsAdapter: TagsRecyclerViewAdapter
@@ -53,8 +53,9 @@ class PendingNewGuideActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pending_new_guide)
-        setSupportActionBar(findViewById(R.id.toolbar))
+        binding = ActivityPendingNewGuideBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
@@ -80,11 +81,11 @@ class PendingNewGuideActivity :
 
         titleLiveData.postValue(guide.title)
         titleLiveData.observe(this, {
-            toolbar_layout.title = it
+            binding.toolbarLayout.title = it
         })
 
-        guideNameEditText.setText(guide.title)
-        guideNameEditText.addTextChangedListener(object : TextChangeListener {
+        binding.content.guideNameEditText.setText(guide.title)
+        binding.content.guideNameEditText.addTextChangedListener(object : TextChangeListener {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 titleLiveData.postValue(s.toString())
             }
@@ -93,13 +94,15 @@ class PendingNewGuideActivity :
         tagsViewManager.spanCount = (guide.tags.size / 4) + 1
         tagsAdapter.setList(guide.tags)
         stepsAdapter.setList(guide.steps, PICK_IMAGE_CODE)
-        tagsEditText.addTextChangedListener(TagAddListener(tagsAdapter, tagsEditText, this))
+        binding.content.tagsEditText.addTextChangedListener(
+            TagAddListener(tagsAdapter, binding.content.tagsEditText, this)
+        )
 
         setUpLayoutsLogListeners()
 
-        acceptButton.setOnClickListener {
+        binding.content.acceptButton.setOnClickListener {
             loadingDialog.show()
-            guide.title = guideNameEditText.text.toString()
+            guide.title = binding.content.guideNameEditText.text.toString()
             guide.tags = tagsAdapter.getTags()
             guide.guideStatus = Guide.Status.ADDED
             StepsUpdater(this).start(stepsAdapter.getItems(), guide)
@@ -140,15 +143,15 @@ class PendingNewGuideActivity :
     }
 
     private fun setUpLayoutsLogListeners() {
-        layoutGuideTitle.setOnLongClickListener {
+        binding.content.layoutGuideTitle.setOnLongClickListener {
             Toast.makeText(this, R.string.guide_title, Toast.LENGTH_LONG).show()
             return@setOnLongClickListener true
         }
-        layoutGuideContent.setOnLongClickListener {
+        binding.content.layoutGuideContent.setOnLongClickListener {
             Toast.makeText(this, R.string.guide_content, Toast.LENGTH_LONG).show()
             return@setOnLongClickListener true
         }
-        layoutGuideTags.setOnLongClickListener {
+        binding.content.layoutGuideTags.setOnLongClickListener {
             Toast.makeText(this, R.string.guide_tags, Toast.LENGTH_SHORT).show()
             return@setOnLongClickListener true
         }
