@@ -1,5 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/drawable/ic_add_photo.xml" value="0.3828125" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/drawable/ic_baseline_more_vert_24.xml" value="0.3828125" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/drawable/ic_clear.xml" value="0.3828125" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/drawable/ic_email.xml" value="0.3828125" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/drawable/ic_heart_empty.xml" value="0.3828125" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/drawable/ic_heart_full.xml" value="0.3828125" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/drawable/ic_info.xml" value="0.3828125" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.3828125" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/drawable/ic_manage_users.xml" value="0.3828125" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/drawable/ic_menu_gallery.xml" value="0.3828125" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/drawable/ic_menu_guides.xml" value="0.3828125" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/drawable/ic_pdf.xml" value="0.3828125" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/drawable/ic_report.xml" value="0.3828125" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/drawable/ic_settings.xml" value="0.3828125" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/drawable/ic_show_more.xml" value="0.3828125" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/drawable/menu_background_color_state.xml" value="0.3828125" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/drawable/radius.xml" value="0.3828125" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/drawable/radius_button.xml" value="0.3671875" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/drawable/ripple_button.xml" value="0.3671875" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/activity_active_user.xml" value="0.20572916666666666" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/activity_add_guide.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/activity_dashboard.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/activity_login.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/activity_pending_new_guide.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/activity_settings.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/activity_single_guide.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/activity_single_reported_guide.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/activity_user.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/app_bar_dashboard.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/content_add_user.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/content_author_info.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/content_my_rate.xml" value="0.19293478260869565" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/content_other_ratings.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/content_settings.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/content_singe_guide.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/content_single_reported_guide.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/dialog_change_password.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/dialog_email_not_verified.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/dialog_export_guide.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/dialog_loading.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/dialog_rate.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/dialog_report.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/dialog_reset_password.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/fragment_all_guides.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/fragment_my_guides.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/fragment_pending_new_guides.xml" value="0.17831813576494426" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/fragment_reported_guides.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/item_add_step.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/item_category.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/item_guide.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/item_guide_with_status.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/item_loading.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/item_manage_users.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/item_no_items.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/item_step.xml" value="0.20153985507246377" />
+        <entry key="..\:/Users/zajko/AndroidStudioProjects/ServiceWorkerHelper/app/src/main/res/layout/nav_header_dashboard.xml" value="0.20153985507246377" />
+      </map>
+    </option>
+  </component>
   <component name="EntryPointsManager">
     <list size="1">
       <item index="0" class="java.lang.String" itemvalue="androidx.room.Query" />

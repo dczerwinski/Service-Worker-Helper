@@ -7,6 +7,7 @@ import android.util.Log
 import android.util.Pair
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Filter
 import androidx.recyclerview.widget.RecyclerView
 import com.wat.serviceworkerhelper.R
 import com.wat.serviceworkerhelper.databinding.ItemCategoryBinding
@@ -20,14 +21,13 @@ import com.wat.serviceworkerhelper.view.dashboard.common.GuideViewHolder
 
 class MyGuidesRecyclerViewAdapter(
     private val activity: Activity
-) : MyRecyclerViewAdapter<RecyclerView.ViewHolder, Guide>() {
+) : MyRecyclerViewAdapter<RecyclerView.ViewHolder, Any>() {
 
     companion object {
         private const val TAG = "MyGuidesRVA"
     }
 
     private var categoriesList = ArrayList<Category>()
-    private var allItemsList = ArrayList<Any>()
     private lateinit var recyclerView: RecyclerView
 
     fun setItems(allGuides: List<Guide>, currentUser: User) {
@@ -49,7 +49,6 @@ class MyGuidesRecyclerViewAdapter(
             allGuides,
             activity.getString(R.string.category_favorites)
         )
-        tempList.addAll(favouritesCat.guides)
         categoriesList.add(favouritesCat)
 
         // Add user own categories
@@ -58,11 +57,9 @@ class MyGuidesRecyclerViewAdapter(
                 currentUser.categories[i],
                 allGuides
             )
-            tempList.addAll(cat.guides)
             categoriesList.add(cat)
         }
         setUpAllList()
-        setItems(tempList)
     }
 
     private fun createCategory(
@@ -74,7 +71,7 @@ class MyGuidesRecyclerViewAdapter(
             cat.name = name
         }
         val guides = getGuidesByUIDs(cat.guidesUIDs, allGuides)
-        return Category(cat, guides, 0, true)
+        return Category(cat, guides, 0, false)
     }
 
     private fun getGuidesByUIDs(
@@ -147,8 +144,7 @@ class MyGuidesRecyclerViewAdapter(
             }
         }
 
-        allItemsList = ArrayList(tempList)
-        notifyDataSetChanged()
+        setItems(tempList)
         recyclerView.startLayoutAnimation()
     }
 
@@ -179,22 +175,22 @@ class MyGuidesRecyclerViewAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
         when (getItemViewType(position)) {
             Type.CATEGORY.ordinal -> {
-                (holder as CategoryViewHolder).bind(allItemsList[position] as User.Category)
+                (holder as CategoryViewHolder).bind(itemsList[position] as User.Category)
                 holder.binding.showMoreIcon.setOnClickListener {
                     if (holder.isExpanded) {
-                        rollUp(allItemsList[position] as User.Category)
+                        rollUp(itemsList[position] as User.Category)
                         holder.rollUp()
                     } else {
-                        expand(allItemsList[position] as User.Category)
+                        expand(itemsList[position] as User.Category)
                         holder.expand()
                     }
                 }
             }
             Type.GUIDE.ordinal -> {
-                (holder as GuideViewHolder).bind(allItemsList[position] as Guide)
+                (holder as GuideViewHolder).bind(itemsList[position] as Guide)
                 holder.itemView.setOnClickListener {
                     val intent = Intent(it.context, SingleGuideActivity::class.java).apply {
-                        putExtra(SingleGuideActivity.GUIDE_KEY, allItemsList[position] as Guide)
+                        putExtra(SingleGuideActivity.GUIDE_KEY, itemsList[position] as Guide)
                     }
                     val options = ActivityOptions.makeSceneTransitionAnimation(
                         activity,
@@ -205,10 +201,10 @@ class MyGuidesRecyclerViewAdapter(
                 }
             }
             Type.GUIDE_WITH_STATUS.ordinal -> {
-                (holder as GuideWithStatusViewHolder).bind(allItemsList[position] as Guide)
+                (holder as GuideWithStatusViewHolder).bind(itemsList[position] as Guide)
                 holder.itemView.setOnClickListener {
                     val intent = Intent(it.context, SingleGuideActivity::class.java).apply {
-                        putExtra(SingleGuideActivity.GUIDE_KEY, allItemsList[position] as Guide)
+                        putExtra(SingleGuideActivity.GUIDE_KEY, itemsList[position] as Guide)
                     }
                     val options = ActivityOptions.makeSceneTransitionAnimation(
                         activity,
@@ -221,18 +217,18 @@ class MyGuidesRecyclerViewAdapter(
             else -> throw IllegalStateException("Wrong type!")
         }
 
-    override fun getItemCount() = allItemsList.size
+    override fun getItemCount() = itemsList.size
 
     override fun getItemViewType(position: Int) = when {
-        allItemsList[position] is User.Category -> Type.CATEGORY.ordinal
-        allItemsList[position] is Guide -> {
-            if ((allItemsList[position] as Guide).guideStatus != Guide.Status.ADDED) {
+        itemsList[position] is User.Category -> Type.CATEGORY.ordinal
+        itemsList[position] is Guide -> {
+            if ((itemsList[position] as Guide).guideStatus != Guide.Status.ADDED) {
                 Type.GUIDE_WITH_STATUS.ordinal
             } else {
                 Type.GUIDE.ordinal
             }
         }
-        else -> throw IllegalStateException("Wrong item in allItemsList! type is ${allItemsList[position]}")
+        else -> throw IllegalStateException("Wrong item in allItemsList! type is ${itemsList[position]}")
     }
 
     private enum class Type {

@@ -3,6 +3,7 @@ package com.wat.serviceworkerhelper.utils
 import android.widget.Filter
 import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
+import com.wat.serviceworkerhelper.model.entities.User
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -38,6 +39,8 @@ abstract class MyRecyclerViewAdapter<VH : RecyclerView.ViewHolder?, I>
                             .toLowerCase(Locale.getDefault())
                             .contains(constraint.toString().toLowerCase(Locale.getDefault()))
                     ) {
+                        filteredList.add(item)
+                    } else if (item is User.Category) {
                         filteredList.add(item)
                     }
                 }

@@ -64,7 +64,9 @@
 
     <style name="AppButtonStyle" parent="@style/Widget.AppCompat.Button.Colored">
         <item name="android:textAppearance">?android:attr/textAppearanceButton</item>
-        <item name="android:minHeight">48dp</item>
+        <item name="android:height">48dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:singleLine">true</item>
         <item name="android:minWidth">120dp</item>
         <item name="android:focusable">true</item>
         <item name="android:clickable">true</item>
@@ -74,11 +76,6 @@
         <item name="android:paddingEnd">20dp</item>
         <item name="android:background">@drawable/radius_button</item>
         <item name="android:foreground">@drawable/ripple_button</item>
-    </style>
-
-    <style name="SignOutButtonStyle" parent="@style/AppButtonStyle">
-        <item name="android:background">@drawable/radius_button_sign_out</item>
-        <item name="android:foreground">@drawable/ripple_button_sign_out</item>
     </style>
 
     <style name="ActionButton" parent="@android:style/Widget.ActionButton">

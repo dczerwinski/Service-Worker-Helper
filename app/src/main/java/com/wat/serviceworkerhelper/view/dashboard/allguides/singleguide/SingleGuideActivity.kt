@@ -70,6 +70,15 @@ class SingleGuideActivity : AppCompatActivity() {
     private val usersViewModel: UsersViewModel by viewModels {
         UsersViewModel.UsersViewModelFactory(userRepository)
     }
+    private val onContentLongClickListener = View.OnLongClickListener {
+        val toast =
+            Toast.makeText(this, R.string.guide_content, Toast.LENGTH_LONG)
+        toast.setGravity(Gravity.CENTER, 0, 0)//TODO repair this toast ? somehow
+        toast.show()
+        ExportGuideDialog.newInstance(guide, binding.content.layoutGuideContent, this)
+            .show(supportFragmentManager, "Export to PDF")
+        true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +95,7 @@ class SingleGuideActivity : AppCompatActivity() {
         tagsViewManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL)
         opinionsAdapter = OpinionsRecyclerViewAdapter(this)
         tagsAdapter = TagsRecyclerViewAdapter(false, null)
-        stepsAdapter = StepsRecyclerViewAdapter(null)
+        stepsAdapter = StepsRecyclerViewAdapter(null, onContentLongClickListener)
 
         usersViewModel.allUsers.observe(this, {
             opinionsAdapter.setUsersList(ArrayList(it))
@@ -185,15 +194,7 @@ class SingleGuideActivity : AppCompatActivity() {
     }
 
     private fun setUpLayoutsLogListeners() {
-        binding.content.layoutGuideContent.setOnLongClickListener {
-            val toast =
-                Toast.makeText(this, R.string.guide_content, Toast.LENGTH_LONG)
-            toast.setGravity(Gravity.CENTER, 0, 0)//TODO repair this toast ? somehow
-            toast.show()
-            ExportGuideDialog.newInstance(guide, binding.content.layoutGuideContent, this)
-                .show(supportFragmentManager, "Export to PDF")
-            return@setOnLongClickListener true
-        }
+        binding.content.layoutGuideContent.setOnLongClickListener(onContentLongClickListener)
         binding.content.contentAuthorInfo.layoutAuthorInfo.setOnLongClickListener {
             Toast.makeText(this, R.string.guide_author, Toast.LENGTH_SHORT).show()
             return@setOnLongClickListener true
@@ -331,6 +332,10 @@ class SingleGuideActivity : AppCompatActivity() {
         binding.content.contentMyRate.ratingByMe.rating = 0F
         binding.content.contentMyRate.ratingByMe.visibility = View.VISIBLE
         binding.content.contentMyRate.layoutOpinionAdded.visibility = View.GONE
+    }
+
+    private fun onContentClick() {
+
     }
 
     override fun onSupportNavigateUp(): Boolean {

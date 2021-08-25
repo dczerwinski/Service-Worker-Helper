@@ -86,8 +86,8 @@
     <string name="user_not_activated">Użytkownik nie został aktywowany!</string>
     <string name="user_activated">Użytkownik aktywowany! Teraz możesz się zalogować!</string>
     <string name="success_adding_guide">Pomyślnie dodano nowy poradnik!</string>
-    <string name="menu_my_guides">Moje poradniki</string>
-    <string name="category_my_guides">Przewodniki które stworzyłeś</string>
+    <string name="menu_my_guides">Moje Poradniki</string>
+    <string name="category_my_guides">Przewodniki które dodałeś</string>
     <string name="category_favorites">Ulubione</string>
     <string name="status_pending">Oczekuje na akceptacje</string>
     <string name="status_reported">Zgłoszony</string>
@@ -124,4 +124,5 @@
     <string name="password_changed">Hasło zmienione!</string>
     <string name="wrong_current_password">Błędne obecne hasło!</string>
     <string name="deleted_user">Usunięty użytkownik</string>
+    <string name="guide_step">Krok poradnika</string>
 </resources>

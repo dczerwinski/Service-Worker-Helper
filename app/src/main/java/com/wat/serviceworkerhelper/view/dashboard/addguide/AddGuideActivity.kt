@@ -80,7 +80,7 @@ class AddGuideActivity :
         )
         stepsViewManager = GridLayoutManager(this, 1)
         tagsAdapter = TagsRecyclerViewAdapter(true, this)
-        stepsAdapter = StepsRecyclerViewAdapter(this)
+        stepsAdapter = StepsRecyclerViewAdapter(this, null)
         stepsAdapter.setList(ArrayList(), PICK_IMAGE_CODE)
 
         tagsRecyclerView = binding.content.tagsRecyclerView.apply {

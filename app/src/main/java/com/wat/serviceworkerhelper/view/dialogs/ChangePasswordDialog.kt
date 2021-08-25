@@ -29,7 +29,7 @@ class ChangePasswordDialog(
         loadingDialog = LoadingDialog(binding.root.context, R.style.LoadingDialog)
         val builder = AlertDialog.Builder(activity, R.style.alertDialog).apply {
             setView(binding.root)
-            setTitle(R.string.dialogTitle)
+            setTitle(R.string.change_password)
             setNegativeButton(R.string.cancel, null)
             setPositiveButton(R.string.save, null)
         }

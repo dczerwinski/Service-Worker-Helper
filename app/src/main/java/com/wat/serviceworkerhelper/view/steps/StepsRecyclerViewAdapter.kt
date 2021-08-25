@@ -22,7 +22,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class StepsRecyclerViewAdapter(
-    val activity: Activity?
+    private val activity: Activity?,
+    private val onLongClickListener: View.OnLongClickListener?
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var itemList = ArrayList<Item>()
@@ -98,7 +99,10 @@ class StepsRecyclerViewAdapter(
         else -> throw IllegalArgumentException("Wrong viewType!")
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) =
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (onLongClickListener != null) {
+            holder.itemView.setOnLongClickListener(onLongClickListener)
+        }
         when (getItemViewType(position)) {
             Type.STEP.viewType -> {
                 (holder as StepViewHolder).setUp(itemList[position].step!!, position + 1)
@@ -186,6 +190,7 @@ class StepsRecyclerViewAdapter(
 
             else -> throw IllegalArgumentException("Wrong viewType!")
         }
+    }
 
     override fun getItemCount() = itemList.size
 

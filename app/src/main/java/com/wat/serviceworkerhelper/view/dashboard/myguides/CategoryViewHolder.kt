@@ -8,11 +8,7 @@ class CategoryViewHolder(
     val binding: ItemCategoryBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    var isExpanded = true
-
-    init {
-        binding.showMoreIcon.rotation = -90f
-    }
+    var isExpanded = false
 
     fun bind(category: User.Category) {
         binding.categoryName.text = category.name

@@ -3,6 +3,7 @@ package com.wat.serviceworkerhelper.view.dashboard.pendingnewguides
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -50,6 +51,10 @@ class PendingNewGuideActivity :
     private val loadingDialog by lazy {
         LoadingDialog(this, R.style.LoadingDialog, getString(R.string.adding_guide))
     }
+    private val onContentLongClickListener = View.OnLongClickListener {
+        Toast.makeText(this, R.string.guide_title, Toast.LENGTH_LONG).show()
+        true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +69,7 @@ class PendingNewGuideActivity :
         tagsViewManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL)
         stepsViewManager = GridLayoutManager(this, 1)
         tagsAdapter = TagsRecyclerViewAdapter(true, this)
-        stepsAdapter = StepsRecyclerViewAdapter(this)
+        stepsAdapter = StepsRecyclerViewAdapter(this, onContentLongClickListener)
 
         tagsRecyclerView = findViewById<RecyclerView>(R.id.tagsRecyclerView).apply {
             setHasFixedSize(true)
@@ -107,6 +112,13 @@ class PendingNewGuideActivity :
             guide.guideStatus = Guide.Status.ADDED
             StepsUpdater(this).start(stepsAdapter.getItems(), guide)
         }
+
+        binding .content.declineButton.setOnClickListener {
+            StepsUpdater.delete(guide.uid, guide.steps.size)
+            viewModel.delete(guide.uid)
+            Toast.makeText(this, R.string.guide_deleted, Toast.LENGTH_SHORT).show()
+            finish()
+        }
     }
 
     override fun onUploadEnd(guide: Guide) {
@@ -143,10 +155,7 @@ class PendingNewGuideActivity :
     }
 
     private fun setUpLayoutsLogListeners() {
-        binding.content.layoutGuideTitle.setOnLongClickListener {
-            Toast.makeText(this, R.string.guide_title, Toast.LENGTH_LONG).show()
-            return@setOnLongClickListener true
-        }
+        binding.content.layoutGuideTitle.setOnLongClickListener(onContentLongClickListener)
         binding.content.layoutGuideContent.setOnLongClickListener {
             Toast.makeText(this, R.string.guide_content, Toast.LENGTH_LONG).show()
             return@setOnLongClickListener true

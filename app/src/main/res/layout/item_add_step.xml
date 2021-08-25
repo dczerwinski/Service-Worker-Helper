@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="10dp"
             android:layout_weight="0.7"
-            android:hint="@string/guide_desc"
+            android:hint="@string/guide_step"
             android:inputType="textCapSentences|textMultiLine"
             android:maxLength="2000"
             android:maxLines="20" />

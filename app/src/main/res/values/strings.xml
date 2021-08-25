@@ -150,4 +150,5 @@
     <string name="password_changed">Password changed!</string>
     <string name="wrong_current_password">Wrong current password!</string>
     <string name="deleted_user">Deleted user</string>
+    <string name="guide_step">Guide step</string>
 </resources>

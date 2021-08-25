@@ -2,6 +2,7 @@ package com.wat.serviceworkerhelper.view.dashboard.repotedguides
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -51,7 +52,10 @@ class SingleReportedGuideActivity :
     private val loadingDialog by lazy {
         LoadingDialog(this, R.style.LoadingDialog, getString(R.string.adding_guide))
     }
-
+    private val onContentLongClickListener = View.OnLongClickListener {
+        Toast.makeText(this, R.string.guide_title, Toast.LENGTH_LONG).show()
+        true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,7 +117,7 @@ class SingleReportedGuideActivity :
 
     private fun setUpSteps() {
         stepsViewManager = GridLayoutManager(this, 1)
-        stepsAdapter = StepsRecyclerViewAdapter(this)
+        stepsAdapter = StepsRecyclerViewAdapter(this, onContentLongClickListener)
         stepsRecyclerView = findViewById<RecyclerView>(R.id.stepsRecyclerView).apply {
             setHasFixedSize(true)
             adapter = stepsAdapter
@@ -178,10 +182,7 @@ class SingleReportedGuideActivity :
     }
 
     private fun setUpLayoutsLogListeners() {
-        binding.content.layoutGuideTitle.setOnLongClickListener {
-            Toast.makeText(this, R.string.guide_title, Toast.LENGTH_LONG).show()
-            return@setOnLongClickListener true
-        }
+        binding.content.layoutGuideTitle.setOnLongClickListener(onContentLongClickListener)
         binding.content.layoutGuideContent.setOnLongClickListener {
             Toast.makeText(this, R.string.guide_content, Toast.LENGTH_LONG).show()
             return@setOnLongClickListener true
